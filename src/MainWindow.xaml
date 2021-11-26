@@ -1,0 +1,51 @@
+﻿<Window x:Class="ShaderForm2.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        xmlns:glWpfControl="clr-namespace:OpenTK.Wpf;assembly=GLWpfControl"
+        xmlns:self="clr-namespace:ShaderForm2"
+        mc:Ignorable="d"
+        Title="{Binding CurrentFile}" Height="450" Width="800" KeyDown="Window_KeyDown" x:Name="window" 
+		AllowDrop="True" DragOver="Window_DragOver" Drop="Window_Drop">
+	<Window.Resources>
+		<BooleanToVisibilityConverter x:Key="BoolToVis" />
+		<self:UpdateViewModel x:Key="update"/>
+	</Window.Resources>
+	<DockPanel>
+		<ToolBarTray DockPanel.Dock="Top">
+			<ToolBar>
+				<Menu>
+					<MenuItem Header="_File" ItemsSource="{Binding RecentlyUsed}">
+						<ItemsControl.ItemTemplate>
+							<DataTemplate>
+								<MenuItem Header="{Binding}" IsCheckable="False"
+										  Command="{Binding DataContext.LoadCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window} }" CommandParameter="{Binding}" />
+							</DataTemplate>
+						</ItemsControl.ItemTemplate>
+					</MenuItem>
+				</Menu>
+			</ToolBar>
+		</ToolBarTray>
+		<StatusBar DockPanel.Dock="Bottom">
+			<Button DataContext="{DynamicResource update}" Visibility="{Binding Available, Converter={StaticResource BoolToVis}}"
+					Command="{Binding Command}">
+				Update available!
+			</Button>
+		</StatusBar>
+		<Grid>
+			<!--main client area-->
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="10" />
+				<ColumnDefinition Width="*" />
+			</Grid.ColumnDefinitions>
+			<glWpfControl:GLWpfControl x:Name="OpenTkControl" SnapsToDevicePixels="True" Render="OpenTkControl_OnRender" 
+								   MouseDown="OpenTkControl_MouseDown" MouseMove="OpenTkControl_MouseMove" SizeChanged="OpenTkControl_SizeChanged"
+								   KeyDown="OpenTkControl_KeyDown" Focusable="True"/>
+			<GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+			<hc:PropertyGrid Grid.Column="2" SelectedObject="{Binding ShaderViewModel}" ShowSortButton="False"/>
+		</Grid>
+	</DockPanel>
+</Window>
