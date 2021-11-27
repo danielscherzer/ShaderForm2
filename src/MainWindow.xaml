@@ -13,40 +13,40 @@
 		<BooleanToVisibilityConverter x:Key="BoolToVis" />
 		<self:UpdateViewModel x:Key="update"/>
 	</Window.Resources>
-	<DockPanel>
-		<ToolBarTray DockPanel.Dock="Top">
-			<ToolBar>
-				<Menu>
-					<MenuItem Header="_File" ItemsSource="{Binding RecentlyUsed}">
-						<ItemsControl.ItemTemplate>
-							<DataTemplate>
-								<MenuItem Header="{Binding}" IsCheckable="False"
+	<Grid>
+		<!--main client area-->
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition x:Name="LeftColumn" Width="*" />
+			<ColumnDefinition Width="10" />
+			<ColumnDefinition x:Name="RightColumn" Width="*" />
+		</Grid.ColumnDefinitions>
+		<DockPanel Grid.Column="0">
+			<ToolBarTray DockPanel.Dock="Top">
+				<ToolBar>
+					<Menu>
+						<MenuItem Header="_File" ItemsSource="{Binding RecentlyUsed}">
+							<ItemsControl.ItemTemplate>
+								<DataTemplate>
+									<MenuItem Header="{Binding}" IsCheckable="False"
 										  Command="{Binding DataContext.LoadCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window} }" CommandParameter="{Binding}" />
-							</DataTemplate>
-						</ItemsControl.ItemTemplate>
-					</MenuItem>
-				</Menu>
-			</ToolBar>
-		</ToolBarTray>
-		<StatusBar DockPanel.Dock="Bottom">
-			<Button Click="Button_Click">Play</Button>
-			<Button DataContext="{DynamicResource update}" Visibility="{Binding Available, Converter={StaticResource BoolToVis}}"
+								</DataTemplate>
+							</ItemsControl.ItemTemplate>
+						</MenuItem>
+					</Menu>
+				</ToolBar>
+			</ToolBarTray>
+			<StatusBar DockPanel.Dock="Bottom">
+				<Button Click="Button_Click">Play</Button>
+				<Button DataContext="{DynamicResource update}" Visibility="{Binding Available, Converter={StaticResource BoolToVis}}"
 					Command="{Binding Command}">
-				Update available!
-			</Button>
-		</StatusBar>
-		<Grid>
-			<!--main client area-->
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition x:Name="LeftColumn" Width="*" />
-				<ColumnDefinition Width="10" />
-				<ColumnDefinition x:Name="RightColumn" Width="*" />
-			</Grid.ColumnDefinitions>
-			<glWpfControl:GLWpfControl Grid.Column="0" x:Name="OpenTkControl" SnapsToDevicePixels="True" Render="OpenTkControl_OnRender" 
-								   MouseDown="OpenTkControl_MouseDown" MouseMove="OpenTkControl_MouseMove" SizeChanged="OpenTkControl_SizeChanged"
-								   KeyDown="OpenTkControl_KeyDown" Focusable="True"/>
-			<GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-			<hc:PropertyGrid Grid.Column="2" SelectedObject="{Binding ShaderViewModel}" ShowSortButton="False"/>
-		</Grid>
-	</DockPanel>
+					Update available!
+				</Button>
+			</StatusBar>
+			<hc:PropertyGrid SelectedObject="{Binding ShaderViewModel}" ShowSortButton="False"/>
+		</DockPanel>
+		<GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+		<glWpfControl:GLWpfControl Grid.Column="2" x:Name="OpenTkControl" SnapsToDevicePixels="True" Render="OpenTkControl_OnRender" 
+								MouseDown="OpenTkControl_MouseDown" MouseMove="OpenTkControl_MouseMove" SizeChanged="OpenTkControl_SizeChanged"
+								KeyDown="OpenTkControl_KeyDown" Focusable="True"/>
+	</Grid>
 </Window>
