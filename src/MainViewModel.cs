@@ -18,8 +18,7 @@ namespace ShaderForm2
 
 		public ICommand LoadCommand { private set; get; }
 
-		public ShaderViewModel ShaderViewModel { get; } = new();
-
+		public ShaderViewModel ShaderViewModel => shaderViewModel;
 		public string CurrentFile
 		{
 			get => ShaderViewModel.FilePath;
@@ -27,11 +26,11 @@ namespace ShaderForm2
 			{
 				ShaderViewModel.Load(value);
 				//TODO: remove Application.Current.Dispatcher in VM
-				//Application.Current.Dispatcher.Invoke(() => RecentlyUsed.Insert(0, value));
-				//IEnumerable<string> distinct = RecentlyUsed.Distinct();
-				//RecentlyUsed = new ObservableCollection<string>(distinct);
+				Application.Current.Dispatcher.Invoke(() => RecentlyUsed.Insert(0, value));
+				IEnumerable<string> distinct = RecentlyUsed.Distinct();
+				RecentlyUsed = new ObservableCollection<string>(distinct);
 				_fileChangeSubscription?.Dispose();
-				_fileChangeSubscription = TrackedFileObservable.DelayedLoad(value).Subscribe(fileName => CurrentFile = value);
+				_fileChangeSubscription = TrackedFileObservable.DelayedLoad(value).ObserveOnDispatcher().Subscribe(fileName => ShaderViewModel.Load(fileName));
 				RaisePropertyChanged();
 			}
 		}
@@ -47,5 +46,6 @@ namespace ShaderForm2
 
 		private IDisposable? _fileChangeSubscription;
 		private ObservableCollection<string> _recentlyUsed = new();
+		private readonly ShaderViewModel shaderViewModel = new();
 	}
 }

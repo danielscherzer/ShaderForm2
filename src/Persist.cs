@@ -30,11 +30,6 @@ namespace ShaderForm2
 				.Property(vm => vm.RecentlyUsed)
 				.PersistOn(nameof(Window.Closing), window);
 			Tracker.Track(mainViewModel);
-
-			//window.Closing += (_, args) =>
-			//{
-
-			//};
 		}
 	}
 }

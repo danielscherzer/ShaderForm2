@@ -9,9 +9,8 @@ namespace ShaderForm2
 		internal static IObservable<string> DelayedLoad(string fileName)
 		{
 			return CreateFileChangeSequence(fileName)
-				//.Throttle(TimeSpan.FromSeconds(0.1f))
-				//.Delay(TimeSpan.FromSeconds(0.1f))
-				;
+				.Throttle(TimeSpan.FromSeconds(0.1f))
+				.Delay(TimeSpan.FromSeconds(0.1f));
 		}
 
 		private static IObservable<string> CreateFileChangeSequence(string fileName)

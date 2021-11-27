@@ -2,8 +2,6 @@
 using OpenTK.Mathematics;
 using System;
 using System.IO;
-using System.Windows.Input;
-using System.Windows.Threading;
 using Zenseless.OpenTK;
 using Zenseless.Patterns;
 using Zenseless.Resources;
@@ -15,7 +13,7 @@ namespace ShaderForm2
 		public ShaderViewModel()
 		{
 			_shaderProgram = LoadFragmentShader(_defaultFragmentSource) ?? throw new Exception("Could not load default shader!");
-			ResolveUniforms(_shaderProgram);
+			ResolveDefaultUniformLocation(_shaderProgram);
 		}
 
 		public void Load(string filePath)
@@ -26,13 +24,13 @@ namespace ShaderForm2
 			{
 				_shaderProgram.Dispose();
 				_shaderProgram = newShaderProgram;
-				ResolveUniforms(_shaderProgram);
+				ResolveDefaultUniformLocation(_shaderProgram);
 				FilePath = filePath;
 			}
 		}
 
 		public string FilePath { get => _filePath; private set => Set(ref _filePath, value); }
-		public float Time { get => _time; private set => Set(ref _time, value); }
+		public float Time { get => _time; set => Set(ref _time, value); }
 
 		internal void Resize(int frameBufferWidth, int frameBufferHeight)
 		{
@@ -76,13 +74,15 @@ namespace ShaderForm2
 			}
 		}
 
-		private void ResolveUniforms(ShaderProgram shaderProgram)
+		private void ResolveDefaultUniformLocation(ShaderProgram shaderProgram)
 		{
 			locResolution = GL.GetUniformLocation(shaderProgram.Handle, "u_resolution");
 			if(-1 == locResolution) locResolution = GL.GetUniformLocation(shaderProgram.Handle, "iResolution");
+
 			locTime = GL.GetUniformLocation(shaderProgram.Handle, "u_time");
 			if (-1 == locTime) locTime = GL.GetUniformLocation(shaderProgram.Handle, "iGlobalTime");
 			if (-1 == locTime) locTime = GL.GetUniformLocation(shaderProgram.Handle, "iTime");
+
 			//visualContext.SetUniform("iMouse", mouseX, mouseY, mouseButton);
 			//visualContext.SetUniform("u_mouse", mouseX, mouseY);
 		}
