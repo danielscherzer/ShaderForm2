@@ -29,6 +29,7 @@
 			</ToolBar>
 		</ToolBarTray>
 		<StatusBar DockPanel.Dock="Bottom">
+			<Button Click="Button_Click">Play</Button>
 			<Button DataContext="{DynamicResource update}" Visibility="{Binding Available, Converter={StaticResource BoolToVis}}"
 					Command="{Binding Command}">
 				Update available!
@@ -37,11 +38,11 @@
 		<Grid>
 			<!--main client area-->
 			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="*" />
+				<ColumnDefinition x:Name="LeftColumn" Width="*" />
 				<ColumnDefinition Width="10" />
-				<ColumnDefinition Width="*" />
+				<ColumnDefinition x:Name="RightColumn" Width="*" />
 			</Grid.ColumnDefinitions>
-			<glWpfControl:GLWpfControl x:Name="OpenTkControl" SnapsToDevicePixels="True" Render="OpenTkControl_OnRender" 
+			<glWpfControl:GLWpfControl Grid.Column="0" x:Name="OpenTkControl" SnapsToDevicePixels="True" Render="OpenTkControl_OnRender" 
 								   MouseDown="OpenTkControl_MouseDown" MouseMove="OpenTkControl_MouseMove" SizeChanged="OpenTkControl_SizeChanged"
 								   KeyDown="OpenTkControl_KeyDown" Focusable="True"/>
 			<GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>

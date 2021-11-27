@@ -39,7 +39,7 @@ namespace ShaderForm2
 
 		internal void Render(float frameTime)
 		{
-			Time += frameTime;
+			//Time += frameTime;
 			if (-1 != locResolution) _shaderProgram.Uniform(locResolution, _resolution);
 			if (-1 != locTime) _shaderProgram.Uniform(locTime, Time);
 			_shaderProgram.Bind();

@@ -36,9 +36,11 @@ namespace ShaderForm2
 		}
 
 		public ObservableCollection<string> RecentlyUsed { get => _recentlyUsed; set => Set(ref _recentlyUsed, value/*, coll => BindingOperations.EnableCollectionSynchronization(coll, _lockObj)*/); }
+		public bool IsRunning { get; internal set; }
 
 		internal void Render(float frameTime)
 		{
+			if (IsRunning) ShaderViewModel.Time += frameTime;
 			ShaderViewModel.Render(frameTime);
 		}
 

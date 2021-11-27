@@ -74,5 +74,10 @@ namespace ShaderForm2
 				_viewModel.CurrentFile = fileName;
 			}
 		}
+
+		private void Button_Click(object sender, RoutedEventArgs e)
+		{
+			_viewModel.IsRunning = !_viewModel.IsRunning;
+		}
 	}
 }
