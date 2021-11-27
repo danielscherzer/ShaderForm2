@@ -2,6 +2,8 @@
 using OpenTK.Mathematics;
 using System;
 using System.IO;
+using System.Windows.Input;
+using System.Windows.Threading;
 using Zenseless.OpenTK;
 using Zenseless.Patterns;
 using Zenseless.Resources;
@@ -12,10 +14,8 @@ namespace ShaderForm2
 	{
 		public ShaderViewModel()
 		{
-			EmbeddedResourceDirectory _dir = new(nameof(ShaderForm2) + ".content");
-			_defaultVertexSource = _dir.Resource("screenQuad.vert").OpenText();
-			_defaultFragmentSource = _dir.Resource("checker.frag").OpenText();
 			_shaderProgram = LoadFragmentShader(_defaultFragmentSource) ?? throw new Exception("Could not load default shader!");
+			ResolveUniforms(_shaderProgram);
 		}
 
 		public void Load(string filePath)
@@ -26,6 +26,7 @@ namespace ShaderForm2
 			{
 				_shaderProgram.Dispose();
 				_shaderProgram = newShaderProgram;
+				ResolveUniforms(_shaderProgram);
 				FilePath = filePath;
 			}
 		}
@@ -41,20 +42,24 @@ namespace ShaderForm2
 		internal void Render(float frameTime)
 		{
 			Time += frameTime;
+			if (-1 != locResolution) _shaderProgram.Uniform(locResolution, _resolution);
+			if (-1 != locTime) _shaderProgram.Uniform(locTime, Time);
 			_shaderProgram.Bind();
-			_shaderProgram.Uniform("u_resolution", _resolution);
-			_shaderProgram.Uniform("u_time", Time);
 			GL.DrawArrays(PrimitiveType.TriangleStrip, 0, 4);
 		}
+
+		private static readonly EmbeddedResourceDirectory _dir = new(nameof(ShaderForm2) + ".content");
+		private static readonly string _defaultVertexSource = _dir.Resource("screenQuad.vert").OpenText();
+		private static readonly string _defaultFragmentSource = _dir.Resource("checker.frag").OpenText();
 
 		private string _filePath = "";
 		private ShaderProgram _shaderProgram;
 		private Vector2 _resolution = Vector2.One;
 		private float _time;
-		private readonly string _defaultFragmentSource;
-		private readonly string _defaultVertexSource;
+		private int locResolution = -1;
+		private int locTime = -1;
 
-		private ShaderProgram? LoadFragmentShader(string fragmentSource)
+		private static ShaderProgram? LoadFragmentShader(string fragmentSource)
 		{
 			try
 			{
@@ -69,6 +74,17 @@ namespace ShaderForm2
 			{
 				return null;
 			}
+		}
+
+		private void ResolveUniforms(ShaderProgram shaderProgram)
+		{
+			locResolution = GL.GetUniformLocation(shaderProgram.Handle, "u_resolution");
+			if(-1 == locResolution) locResolution = GL.GetUniformLocation(shaderProgram.Handle, "iResolution");
+			locTime = GL.GetUniformLocation(shaderProgram.Handle, "u_time");
+			if (-1 == locTime) locTime = GL.GetUniformLocation(shaderProgram.Handle, "iGlobalTime");
+			if (-1 == locTime) locTime = GL.GetUniformLocation(shaderProgram.Handle, "iTime");
+			//visualContext.SetUniform("iMouse", mouseX, mouseY, mouseButton);
+			//visualContext.SetUniform("u_mouse", mouseX, mouseY);
 		}
 	}
 }
