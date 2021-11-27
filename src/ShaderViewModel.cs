@@ -58,10 +58,10 @@ namespace ShaderForm2
 		{
 			try
 			{
-				var shaderInput = new (ShaderType, string)[]
+				(ShaderType, string)[] shaderInput = new[]
 				{
-				(ShaderType.VertexShader, _defaultVertexSource),
-				(ShaderType.FragmentShader, fragmentSource)
+					(ShaderType.VertexShader, _defaultVertexSource),
+					(ShaderType.FragmentShader, fragmentSource)
 				};
 				return new ShaderProgram().CompileLink(shaderInput);
 			}

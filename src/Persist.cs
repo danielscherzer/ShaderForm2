@@ -16,11 +16,11 @@ namespace ShaderForm2
 
 		internal static void Configure(Window window, MainViewModel mainViewModel)
 		{
-			_ = Tracker.Configure<Window>().Id(w => "Window")
-				.Property(w => w.Left, 200)
-				.Property(w => w.Top, 60)
-				.Property(w => w.Width, 1024)
-				.Property(w => w.Height, 1024)
+			_ = Tracker.Configure<Window>().Id(w => "Window", SystemParameters.PrimaryScreenWidth)
+				.Property(w => w.Left)
+				.Property(w => w.Top)
+				.Property(w => w.Width)
+				.Property(w => w.Height)
 				.WhenPersistingProperty((wnd, property) => property.Cancel = WindowState.Normal != wnd.WindowState)
 				.PersistOn(nameof(Window.Closing));
 			Tracker.Track(window);
@@ -30,6 +30,11 @@ namespace ShaderForm2
 				.Property(vm => vm.RecentlyUsed)
 				.PersistOn(nameof(Window.Closing), window);
 			Tracker.Track(mainViewModel);
+			
+			//window.Closing += (_, args) =>
+			//{
+
+			//};
 		}
 	}
 }

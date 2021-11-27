@@ -22,13 +22,14 @@ namespace ShaderForm2
 
 		public string CurrentFile
 		{
-			get => ShaderViewModel.FilePath; set
+			get => ShaderViewModel.FilePath;
+			set
 			{
 				ShaderViewModel.Load(value);
 				//TODO: remove Application.Current.Dispatcher in VM
-				Application.Current.Dispatcher.Invoke(() => RecentlyUsed.Insert(0, value));
-				IEnumerable<string> distinct = RecentlyUsed.Distinct();
-				RecentlyUsed = new ObservableCollection<string>(distinct);
+				//Application.Current.Dispatcher.Invoke(() => RecentlyUsed.Insert(0, value));
+				//IEnumerable<string> distinct = RecentlyUsed.Distinct();
+				//RecentlyUsed = new ObservableCollection<string>(distinct);
 				_fileChangeSubscription?.Dispose();
 				_fileChangeSubscription = TrackedFileObservable.DelayedLoad(value).Subscribe(fileName => CurrentFile = value);
 				RaisePropertyChanged();
