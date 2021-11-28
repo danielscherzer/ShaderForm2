@@ -1,3 +1,4 @@
+using OpenTK.Mathematics;
 using OpenTK.Wpf;
 using System;
 using System.Diagnostics;
@@ -53,11 +54,6 @@ namespace ShaderForm2
 			_viewModel.Resize(OpenTkControl.FrameBufferWidth, OpenTkControl.FrameBufferHeight);
 		}
 
-		private void Window_KeyDown(object sender, KeyEventArgs e)
-		{
-			if (e.Key == Key.Escape) window.Close();
-		}
-
 		private void Window_DragOver(object sender, DragEventArgs dragInfo)
 		{
 			dragInfo.Effects = DragDropEffects.Link;
@@ -76,6 +72,27 @@ namespace ShaderForm2
 		private void Button_Click(object sender, RoutedEventArgs e)
 		{
 			_viewModel.IsRunning = !_viewModel.IsRunning;
+		}
+
+		private void Window_KeyDown(object sender, KeyEventArgs e)
+		{
+			switch (e.Key)
+			{
+				case Key.Escape: Close(); break;
+			}
+			_viewModel.StartMovement(e.Key);
+		}
+
+		private void Window_KeyUp(object sender, KeyEventArgs e)
+		{
+			_viewModel.StopMovement(e.Key);
+		}
+
+		private void Button_Click_1(object sender, RoutedEventArgs e)
+		{
+			_viewModel.Camera.Heading = 0f;
+			_viewModel.Camera.Tilt = 0f;
+			_viewModel.Camera.Position = Vector3.Zero;
 		}
 	}
 }

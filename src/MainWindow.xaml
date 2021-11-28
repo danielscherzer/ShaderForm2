@@ -7,7 +7,8 @@
         xmlns:glWpfControl="clr-namespace:OpenTK.Wpf;assembly=GLWpfControl"
         xmlns:self="clr-namespace:ShaderForm2"
         mc:Ignorable="d"
-        Title="{Binding CurrentFile}" Height="450" Width="800" KeyDown="Window_KeyDown" x:Name="window" 
+        Title="{Binding CurrentFile}" Height="450" Width="800" 
+		KeyDown="Window_KeyDown" KeyUp="Window_KeyUp"
 		AllowDrop="True" DragOver="Window_DragOver" Drop="Window_Drop">
 	<Window.Resources>
 		<BooleanToVisibilityConverter x:Key="BoolToVis" />
@@ -37,15 +38,20 @@
 			</ToolBarTray>
 			<StatusBar DockPanel.Dock="Bottom">
 				<Button Click="Button_Click">Play</Button>
+				<Button Click="Button_Click_1">Reset Camera</Button>
 				<Button DataContext="{DynamicResource update}" Visibility="{Binding Available, Converter={StaticResource BoolToVis}}"
 					Command="{Binding Command}">
 					Update available!
 				</Button>
 			</StatusBar>
-			<hc:PropertyGrid SelectedObject="{Binding ShaderViewModel}" ShowSortButton="False"/>
+			<StackPanel>
+				<hc:PropertyGrid SelectedObject="{Binding ShaderViewModel}" ShowSortButton="False"/>
+				<hc:PropertyGrid SelectedObject="{Binding Camera}" ShowSortButton="False"/>
+			</StackPanel>
 		</DockPanel>
 		<GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-		<glWpfControl:GLWpfControl Grid.Column="2" x:Name="OpenTkControl" SnapsToDevicePixels="True" Render="OpenTkControl_OnRender" 
+		<glWpfControl:GLWpfControl Grid.Column="2" x:Name="OpenTkControl" SnapsToDevicePixels="True" Focusable="True"
+								   Render="OpenTkControl_OnRender" 
 								MouseDown="OpenTkControl_Mouse" MouseMove="OpenTkControl_Mouse" MouseUp="OpenTkControl_Mouse"
 								SizeChanged="OpenTkControl_SizeChanged"/>
 	</Grid>

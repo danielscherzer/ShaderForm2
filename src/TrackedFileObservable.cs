@@ -15,7 +15,7 @@ namespace ShaderForm2
 
 		private static IObservable<string> CreateFileChangeSequence(string fileName)
 		{
-			var fullPath = Path.GetFullPath(fileName);
+			string fullPath = Path.GetFullPath(fileName);
 			return //Observable.Return(fileName).Concat(
 				Observable.Using(
 				() => new FileSystemWatcher(Path.GetDirectoryName(fullPath) ?? fullPath, Path.GetFileName(fullPath))

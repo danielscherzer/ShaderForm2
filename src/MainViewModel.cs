@@ -3,6 +3,7 @@ using ShaderForm2.WPFTools;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Windows;
@@ -19,9 +20,12 @@ namespace ShaderForm2
 			LoadCommand = new TypedDelegateCommand<string>(path => CurrentFile = path);
 		}
 
+		public FirstPersonCamera Camera { get; } = new();
+
 		public ICommand LoadCommand { private set; get; }
 
 		public ShaderViewModel ShaderViewModel => shaderViewModel;
+
 		public string CurrentFile
 		{
 			get => ShaderViewModel.FilePath;
@@ -38,18 +42,64 @@ namespace ShaderForm2
 			}
 		}
 
+		public bool IsRunning { get; internal set; }
+
 		internal void SetMouse(double x, double y, int button)
 		{
 			x = x.Clamp(0, ShaderViewModel.Resolution.X - 1.0);
 			y = ShaderViewModel.Resolution.Y - 1.0 - y.Clamp(0, ShaderViewModel.Resolution.Y - 1.0);
 			ShaderViewModel.Mouse = new Vector3((int)x, (int)y, button);
+			//camera movement
+			if(1 == button)
+			{
+				var diff = ShaderViewModel.Mouse.Xy - lastMouse;
+				Debug.WriteLine(diff);
+				var delta = Vector2.Divide(diff, ShaderViewModel.Resolution);
+				Camera.Heading += 300 * delta.X;
+				Camera.Tilt += 300 * delta.Y;
+			}
+			lastMouse = ShaderViewModel.Mouse.Xy;
 		}
 
 		public ObservableCollection<string> RecentlyUsed { get => _recentlyUsed; set => Set(ref _recentlyUsed, value/*, coll => BindingOperations.EnableCollectionSynchronization(coll, _lockObj)*/); }
-		public bool IsRunning { get; internal set; }
+
+		internal void StartMovement(Key key)
+		{
+			var speed = 1f;
+			switch (key)
+			{
+				case Key.A: movement.X = -speed; break;
+				case Key.D: movement.X = speed; break;
+				case Key.Q: movement.Y = speed; break;
+				case Key.E: movement.Y = -speed; break;
+				case Key.W: movement.Z = speed; break;
+				case Key.S: movement.Z = -speed; break;
+			}
+		}
+
+		internal void StopMovement(Key key)
+		{
+			switch (key)
+			{
+				case Key.A: movement.X = 0f; break;
+				case Key.D: movement.X = 0f; break;
+				case Key.Q: movement.Y = 0f; break;
+				case Key.E: movement.Y = 0f; break;
+				case Key.W: movement.Z = 0f; break;
+				case Key.S: movement.Z = 0f; break;
+			}
+		}
 
 		internal void Render(float frameTime)
 		{
+			Camera.MoveLocal(movement * frameTime);
+			ShaderViewModel.CamPosX = Camera.Position.X;
+			ShaderViewModel.CamPosY = Camera.Position.Y;
+			ShaderViewModel.CamPosZ = Camera.Position.Z;
+
+			ShaderViewModel.CamRotX = OpenTK.Mathematics.MathHelper.DegreesToRadians(Camera.Tilt);
+			ShaderViewModel.CamRotY = OpenTK.Mathematics.MathHelper.DegreesToRadians(Camera.Heading);
+
 			if (IsRunning) ShaderViewModel.Time += frameTime;
 			ShaderViewModel.Render();
 		}
@@ -59,5 +109,8 @@ namespace ShaderForm2
 		private IDisposable? _fileChangeSubscription;
 		private ObservableCollection<string> _recentlyUsed = new();
 		private readonly ShaderViewModel shaderViewModel = new();
+		private Vector3 movement;
+		private Vector2 lastMouse;
+		//private Movement movement = new();
 	}
 }

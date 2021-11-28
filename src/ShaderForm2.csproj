@@ -18,6 +18,7 @@
   
   <ItemGroup>
     <PackageReference Include="AutoUpdateViaGitHubRelease" Version="0.1.51" />
+    <PackageReference Include="GLSLhelper" Version="0.3.52" />
     <PackageReference Include="HandyControls" Version="3.3.8.1" />
     <PackageReference Include="Jot" Version="2.1.11" />
     <PackageReference Include="OpenTK" Version="4.6.7">
