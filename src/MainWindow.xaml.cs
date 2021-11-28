@@ -28,8 +28,8 @@ namespace ShaderForm2
 			OpenTkControl.Start(settings);
 
 			_viewModel = new MainViewModel();
-			Persist.Configure(this, _viewModel);
 			DataContext = _viewModel;
+			Persist.Configure(this, _viewModel);
 		}
 
 		private void OpenTkControl_OnRender(TimeSpan delta)

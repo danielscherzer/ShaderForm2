@@ -3,7 +3,6 @@ using ShaderForm2.WPFTools;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Windows;
@@ -43,6 +42,9 @@ namespace ShaderForm2
 		}
 
 		public bool IsRunning { get; internal set; }
+		public bool TopMost { get => _topMost; set => Set(ref _topMost, value); }
+
+		public ObservableCollection<string> RecentlyUsed { get => _recentlyUsed; set => Set(ref _recentlyUsed, value/*, coll => BindingOperations.EnableCollectionSynchronization(coll, _lockObj)*/); }
 
 		internal void SetMouse(double x, double y, int button)
 		{
@@ -50,18 +52,15 @@ namespace ShaderForm2
 			y = ShaderViewModel.Resolution.Y - 1.0 - y.Clamp(0, ShaderViewModel.Resolution.Y - 1.0);
 			ShaderViewModel.Mouse = new Vector3((int)x, (int)y, button);
 			//camera movement
-			if(1 == button)
+			if (1 == button)
 			{
 				var diff = ShaderViewModel.Mouse.Xy - lastMouse;
-				Debug.WriteLine(diff);
 				var delta = Vector2.Divide(diff, ShaderViewModel.Resolution);
 				Camera.Heading += 300 * delta.X;
 				Camera.Tilt += 300 * delta.Y;
 			}
 			lastMouse = ShaderViewModel.Mouse.Xy;
 		}
-
-		public ObservableCollection<string> RecentlyUsed { get => _recentlyUsed; set => Set(ref _recentlyUsed, value/*, coll => BindingOperations.EnableCollectionSynchronization(coll, _lockObj)*/); }
 
 		internal void StartMovement(Key key)
 		{
@@ -111,6 +110,7 @@ namespace ShaderForm2
 		private readonly ShaderViewModel shaderViewModel = new();
 		private Vector3 movement;
 		private Vector2 lastMouse;
+		private bool _topMost;
 		//private Movement movement = new();
 	}
 }

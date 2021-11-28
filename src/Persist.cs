@@ -40,6 +40,7 @@ namespace ShaderForm2
 			_ = Tracker.Configure<MainViewModel>().Id(vm => nameof(MainViewModel))
 				.Property(vm => vm.CurrentFile, "")
 				.Property(vm => vm.RecentlyUsed)
+				.Property(vm => vm.TopMost)
 				.PersistOn(nameof(Window.Closing), window);
 			Tracker.Track(mainViewModel);
 		}
