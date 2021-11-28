@@ -1,4 +1,5 @@
 ﻿using OpenTK.Mathematics;
+using System.ComponentModel;
 using Zenseless.Patterns;
 
 namespace ShaderForm2
@@ -9,31 +10,28 @@ namespace ShaderForm2
 		private Vector3 position;
 		private float tilt;
 
+		[Description("Heading in degrees")]
 		public float Heading { get => heading; set => Set(ref heading, value); }
+
+		[Description("left-right: keys:A/D\nbackward-forward: keys:S/W\ndown-up: keys:Q/E\n")]
 		public Vector3 Position { get => position; set => Set(ref position, value); }
+
+		[Description("Tilt in degrees")]
 		public float Tilt { get => tilt; set => Set(ref tilt, value); }
 
 		public void MoveLocal(Vector3 movement)
 		{
-			var invRotation = Matrix3.Transpose(CalcRotationMatrix());
-			Position += Vector3.TransformColumn(invRotation, movement);
+			Matrix3 rotation = CalcRotationMatrix();
+			Position += Vector3.TransformRow(movement, rotation);
 		}
 
 		private Matrix3 CalcRotationMatrix()
 		{
-			var heading = OpenTK.Mathematics.MathHelper.DegreesToRadians(Heading);
-			var tilt = OpenTK.Mathematics.MathHelper.DegreesToRadians(Tilt);
-			var rotX = Matrix3.CreateRotationX(tilt);
-			var rotY = Matrix3.CreateRotationY(heading);
-			var mtxRotate = rotY * rotX;
-			return mtxRotate;
+			float heading = OpenTK.Mathematics.MathHelper.DegreesToRadians(Heading);
+			float tilt = OpenTK.Mathematics.MathHelper.DegreesToRadians(Tilt);
+			Matrix3 rotX = Matrix3.CreateRotationX(-tilt);
+			Matrix3 rotY = Matrix3.CreateRotationY(heading);
+			return rotX * rotY;
 		}
-
-		//private Matrix4 CalcViewMatrix()
-		//{
-		//	var mtxTranslate = Matrix4.CreateTranslation(-Position);
-		//	var mtxRotate = CalcRotationMatrix();
-		//	return mtxTranslate * mtxRotate;
-		//}
 	}
 }

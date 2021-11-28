@@ -1,6 +1,8 @@
 ﻿using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using Zenseless.OpenTK;
@@ -32,12 +34,22 @@ namespace ShaderForm2
 			}
 		}
 
+		[Description("Left-handed coordinate system with the z-axis pointing in the view direction")]
 		public float CamPosX { get => camPosX; set => Set(ref camPosX, value); }
+		
+		[Description("Left-handed coordinate system with the z-axis pointing in the view direction")]
 		public float CamPosY { get => camPosY; set => Set(ref camPosY, value); }
+		
+		[Description("Left-handed coordinate system with the z-axis pointing in the view direction")]
 		public float CamPosZ { get => camPosZ; set => Set(ref camPosZ, value); }
 
+		[Description("Left-handed coordinate system with the z-axis pointing in the view direction")]
 		public float CamRotX { get => camRotX; set => Set(ref camRotX, value); }
+		
+		[Description("Left-handed coordinate system with the z-axis pointing in the view direction")]
 		public float CamRotY { get => camRotY; set => Set(ref camRotY, value); }
+		
+		[Description("Left-handed coordinate system with the z-axis pointing in the view direction")]
 		public float CamRotZ { get => camRotZ; set => Set(ref camRotZ, value); }
 
 		public string FilePath { get => _filePath; private set => Set(ref _filePath, value); }
@@ -45,8 +57,10 @@ namespace ShaderForm2
 		[Description("Mouse.X\nMouse.Y\nMouse.Z: 1 == left button, 2 == middle button, 3 == right button")]
 		public Vector3 Mouse { get => _mouse; set => Set(ref _mouse, value); }
 
+		[Description("Time in seconds")]
 		public float Time { get => _time; set => Set(ref _time, MathF.Max(0f, value)); }
-		
+
+		[Description("Viewport resolution in pixels")]
 		public Vector2 Resolution { get => _resolution; set => Set(ref _resolution, Vector2.ComponentMax(value, Vector2.One)); }
 
 		internal void Render()

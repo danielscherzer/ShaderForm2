@@ -70,8 +70,8 @@ namespace ShaderForm2
 			{
 				case Key.A: movement.X = -speed; break;
 				case Key.D: movement.X = speed; break;
-				case Key.Q: movement.Y = speed; break;
-				case Key.E: movement.Y = -speed; break;
+				case Key.Q: movement.Y = -speed; break;
+				case Key.E: movement.Y = speed; break;
 				case Key.W: movement.Z = speed; break;
 				case Key.S: movement.Z = -speed; break;
 			}
