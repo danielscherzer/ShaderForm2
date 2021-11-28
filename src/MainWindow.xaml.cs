@@ -1,7 +1,9 @@
 using OpenTK.Wpf;
 using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace ShaderForm2
 {
@@ -20,6 +22,7 @@ namespace ShaderForm2
 				MajorVersion = 4,
 				MinorVersion = 5,
 				GraphicsProfile = OpenTK.Windowing.Common.ContextProfile.Compatability,
+				UseDeviceDpi = true,
 			};
 			OpenTkControl.Start(settings);
 
@@ -33,26 +36,21 @@ namespace ShaderForm2
 			_viewModel.Render((float)delta.TotalSeconds);
 		}
 
-		private void OpenTkControl_MouseDown(object sender, MouseButtonEventArgs e)
+		private void OpenTkControl_Mouse(object sender, MouseEventArgs e)
 		{
+			DpiScale result = VisualTreeHelper.GetDpi(this);
+			Matrix scale = Matrix.Identity;
+			scale.Scale(result.DpiScaleX, result.DpiScaleY);
+			Point position = scale.Transform(e.GetPosition(OpenTkControl));
 
-		}
-
-		private void OpenTkControl_MouseMove(object sender, MouseEventArgs e)
-		{
-			//OpenTkControl.InvalidateVisual();
-			//var position = e.GetPosition(OpenTkControl);
-			//Debug.WriteLine(position);
+			static bool Pressed(MouseButtonState state) => MouseButtonState.Pressed == state;
+			int button = Pressed(e.LeftButton) ? 1 : (Pressed(e.RightButton) ? 3 : (Pressed(e.MiddleButton) ? 2 : 0));
+			_viewModel.SetMouse(position.X, position.Y, button);
 		}
 
 		private void OpenTkControl_SizeChanged(object sender, SizeChangedEventArgs e)
 		{
 			_viewModel.Resize(OpenTkControl.FrameBufferWidth, OpenTkControl.FrameBufferHeight);
-		}
-
-		private void OpenTkControl_KeyDown(object sender, KeyEventArgs e)
-		{
-
 		}
 
 		private void Window_KeyDown(object sender, KeyEventArgs e)

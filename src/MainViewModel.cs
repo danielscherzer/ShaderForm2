@@ -1,10 +1,13 @@
-﻿using System;
+﻿using OpenTK.Mathematics;
+using ShaderForm2.WPFTools;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Input;
+using Zenseless.OpenTK;
 using Zenseless.Patterns;
 
 namespace ShaderForm2
@@ -35,16 +38,23 @@ namespace ShaderForm2
 			}
 		}
 
+		internal void SetMouse(double x, double y, int button)
+		{
+			x = x.Clamp(0, ShaderViewModel.Resolution.X - 1.0);
+			y = ShaderViewModel.Resolution.Y - 1.0 - y.Clamp(0, ShaderViewModel.Resolution.Y - 1.0);
+			ShaderViewModel.Mouse = new Vector3((int)x, (int)y, button);
+		}
+
 		public ObservableCollection<string> RecentlyUsed { get => _recentlyUsed; set => Set(ref _recentlyUsed, value/*, coll => BindingOperations.EnableCollectionSynchronization(coll, _lockObj)*/); }
 		public bool IsRunning { get; internal set; }
 
 		internal void Render(float frameTime)
 		{
 			if (IsRunning) ShaderViewModel.Time += frameTime;
-			ShaderViewModel.Render(frameTime);
+			ShaderViewModel.Render();
 		}
 
-		internal void Resize(int frameBufferWidth, int frameBufferHeight) => ShaderViewModel.Resize(frameBufferWidth, frameBufferHeight);
+		internal void Resize(int frameBufferWidth, int frameBufferHeight) => ShaderViewModel.Resolution = new Vector2(frameBufferWidth, frameBufferHeight);
 
 		private IDisposable? _fileChangeSubscription;
 		private ObservableCollection<string> _recentlyUsed = new();

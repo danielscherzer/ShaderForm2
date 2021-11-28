@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace ShaderForm2
+namespace ShaderForm2.WPFTools
 {
 	public class TypedDelegateCommand<TDataType> : ICommand
 	{

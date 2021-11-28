@@ -46,7 +46,7 @@
 		</DockPanel>
 		<GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
 		<glWpfControl:GLWpfControl Grid.Column="2" x:Name="OpenTkControl" SnapsToDevicePixels="True" Render="OpenTkControl_OnRender" 
-								MouseDown="OpenTkControl_MouseDown" MouseMove="OpenTkControl_MouseMove" SizeChanged="OpenTkControl_SizeChanged"
-								KeyDown="OpenTkControl_KeyDown" Focusable="True"/>
+								MouseDown="OpenTkControl_Mouse" MouseMove="OpenTkControl_Mouse" MouseUp="OpenTkControl_Mouse"
+								SizeChanged="OpenTkControl_SizeChanged"/>
 	</Grid>
 </Window>

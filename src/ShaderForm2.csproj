@@ -20,11 +20,15 @@
     <PackageReference Include="AutoUpdateViaGitHubRelease" Version="0.1.51" />
     <PackageReference Include="HandyControls" Version="3.3.8.1" />
     <PackageReference Include="Jot" Version="2.1.11" />
-    <PackageReference Include="OpenTK" Version="4.6.7" />
-    <PackageReference Include="OpenTK.GLWpfControl" Version="4.1.0" />
+    <PackageReference Include="OpenTK" Version="4.6.7">
+      <NoWarn>1608</NoWarn>
+    </PackageReference>
+    <PackageReference Include="OpenTK.GLWpfControl" Version="4.1.0">
+      <NoWarn>1608</NoWarn>
+    </PackageReference>
     <PackageReference Include="ReactiveUI.WPF" Version="16.3.10" />
     <PackageReference Include="System.Reactive" Version="5.0.0" />
-    <PackageReference Include="Zenseless.OpenTK" Version="0.1.35" />
+    <PackageReference Include="Zenseless.OpenTK" Version="0.1.36" />
     <PackageReference Include="Zenseless.Patterns" Version="0.6.18" />
     <PackageReference Include="Zenseless.Resources" Version="0.1.9" />
   </ItemGroup>

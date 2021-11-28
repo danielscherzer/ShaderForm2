@@ -1,4 +1,5 @@
 ﻿using AutoUpdateViaGitHubRelease;
+using ShaderForm2.WPFTools;
 using System.IO;
 using System.Reflection;
 using System.Windows;

@@ -1,6 +1,7 @@
 ﻿using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using System;
+using System.ComponentModel;
 using System.IO;
 using Zenseless.OpenTK;
 using Zenseless.Patterns;
@@ -30,18 +31,17 @@ namespace ShaderForm2
 		}
 
 		public string FilePath { get => _filePath; private set => Set(ref _filePath, value); }
-		public float Time { get => _time; set => Set(ref _time, value); }
+		[Description("Mouse.X\nMouse.Y\nMouse.Z: 1 == left button, 2 == middle button, 3 == right button")]
+		public Vector3 Mouse { get => _mouse; set => Set(ref _mouse, value); }
+		public float Time { get => _time; set => Set(ref _time, MathF.Max(0f, value)); }
+		public Vector2 Resolution { get => _resolution; set => Set(ref _resolution, Vector2.ComponentMax(value, Vector2.One)); }
 
-		internal void Resize(int frameBufferWidth, int frameBufferHeight)
+		internal void Render()
 		{
-			_resolution = new Vector2(frameBufferWidth, frameBufferHeight);
-		}
-
-		internal void Render(float frameTime)
-		{
-			//Time += frameTime;
 			if (-1 != locResolution) _shaderProgram.Uniform(locResolution, _resolution);
 			if (-1 != locTime) _shaderProgram.Uniform(locTime, Time);
+			if (-1 != locMouse) _shaderProgram.Uniform(locMouse, Mouse.Xy);
+			if (-1 != locMouseButton) _shaderProgram.Uniform(locMouse, Mouse);
 			_shaderProgram.Bind();
 			GL.DrawArrays(PrimitiveType.TriangleStrip, 0, 4);
 		}
@@ -56,6 +56,9 @@ namespace ShaderForm2
 		private float _time;
 		private int locResolution = -1;
 		private int locTime = -1;
+		private int locMouse = -1;
+		private int locMouseButton = -1;
+		private Vector3 _mouse;
 
 		private static ShaderProgram? LoadFragmentShader(string fragmentSource)
 		{
@@ -83,8 +86,8 @@ namespace ShaderForm2
 			if (-1 == locTime) locTime = GL.GetUniformLocation(shaderProgram.Handle, "iGlobalTime");
 			if (-1 == locTime) locTime = GL.GetUniformLocation(shaderProgram.Handle, "iTime");
 
-			//visualContext.SetUniform("iMouse", mouseX, mouseY, mouseButton);
-			//visualContext.SetUniform("u_mouse", mouseX, mouseY);
+			locMouse = GL.GetUniformLocation(shaderProgram.Handle, "u_mouse");
+			locMouseButton = GL.GetUniformLocation(shaderProgram.Handle, "iMouse");
 		}
 	}
 }
