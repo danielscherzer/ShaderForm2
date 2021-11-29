@@ -42,7 +42,10 @@
 			<StatusBar DockPanel.Dock="Bottom">
 				<Button Click="Button_Click">Play</Button>
 				<Button Click="Button_Click_1">Reset Camera</Button>
-				<Button DataContext="{DynamicResource update}" Visibility="{Binding Available, Converter={StaticResource BoolToVis}}" Command="{Binding CommandUpdate}">
+				<Button Background="LightCoral"
+						DataContext="{DynamicResource update}" 
+						Visibility="{Binding Available, Converter={StaticResource BoolToVis}}" 
+						Command="{Binding CommandUpdate}">
 					Update available!
 				</Button>
 			</StatusBar>
