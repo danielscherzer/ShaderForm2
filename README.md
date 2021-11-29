@@ -1,6 +1,6 @@
 # Shader Form 2
 
-s
+[![Build status](https://ci.appveyor.com/api/projects/status/fgb7600ufq6nj096?svg=true)](https://ci.appveyor.com/project/danielscherzer/shaderform2)
 ---------------------------------------
 
 
