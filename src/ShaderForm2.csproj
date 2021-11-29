@@ -1,14 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   
   <PropertyGroup>
-    <Version>0.1</Version>
+    <Version>0.1.0</Version>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <Nullable>enable</Nullable>
     <RootNamespace>ShaderForm2</RootNamespace>
+    <Company>Daniel Scherzer</Company>
+    <Authors>Daniel Scherzer</Authors>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <Copyright>2021 Daniel Scherzer</Copyright>
   </PropertyGroup>
   
   <ItemGroup>
