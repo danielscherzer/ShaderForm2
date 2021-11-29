@@ -12,9 +12,11 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     <Copyright>2021 Daniel Scherzer</Copyright>
+    <ApplicationIcon>content\shaderform2.ico</ApplicationIcon>
   </PropertyGroup>
   
   <ItemGroup>
+    <Resource Include="content\shaderform2.ico" />
     <EmbeddedResource Include="content\checker.frag" />
     <EmbeddedResource Include="content\screenQuad.vert" />
   </ItemGroup>
@@ -27,12 +29,12 @@
     <PackageReference Include="OpenTK" Version="4.6.7">
       <NoWarn>NU1608</NoWarn>
     </PackageReference>
-    <PackageReference Include="OpenTK.GLWpfControl" Version="4.1.0"/>
+    <PackageReference Include="OpenTK.GLWpfControl" Version="4.1.0" />
     <PackageReference Include="ReactiveUI.WPF" Version="16.3.10" />
     <PackageReference Include="System.Reactive" Version="5.0.0" />
     <PackageReference Include="Zenseless.OpenTK" Version="0.1.36" />
     <PackageReference Include="Zenseless.Patterns" Version="0.6.18" />
     <PackageReference Include="Zenseless.Resources" Version="0.1.9" />
   </ItemGroup>
-
+  
 </Project>

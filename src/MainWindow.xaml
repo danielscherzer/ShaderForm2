@@ -7,7 +7,7 @@
         xmlns:glWpfControl="clr-namespace:OpenTK.Wpf;assembly=GLWpfControl"
         xmlns:self="clr-namespace:ShaderForm2"
         mc:Ignorable="d"
-        Title="{Binding ShaderViewModel.FilePath}" Height="450" Width="800" Topmost="{Binding TopMost}"
+        Title="{Binding ShaderViewModel.FilePath}" Height="450" Width="800" Topmost="{Binding TopMost}" Icon="Content/shaderform2.ico"
 		KeyDown="Window_KeyDown" KeyUp="Window_KeyUp"
 		AllowDrop="True" DragOver="Window_DragOver" Drop="Window_Drop">
 	<Window.Resources>
