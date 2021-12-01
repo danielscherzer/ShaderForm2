@@ -94,5 +94,11 @@ namespace ShaderForm2
 			_viewModel.Camera.Tilt = 0f;
 			_viewModel.Camera.Position = Vector3.Zero;
 		}
+
+		private void MenuItem_Click(object sender, RoutedEventArgs e) => Close();
+
+		private void CommandBindingClose_CanExecute(object sender, CanExecuteRoutedEventArgs e) => e.CanExecute = true;
+
+		private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e) => Close();
 	}
 }

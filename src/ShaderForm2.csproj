@@ -26,6 +26,7 @@
     <PackageReference Include="GLSLhelper" Version="0.3.52" />
     <PackageReference Include="HandyControls" Version="3.3.8.1" />
     <PackageReference Include="Jot" Version="2.1.11" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="OpenTK" Version="4.6.7">
       <NoWarn>NU1608</NoWarn>
     </PackageReference>

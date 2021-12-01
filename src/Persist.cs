@@ -3,7 +3,6 @@
 using Jot.Storage;
 #endif
 using System.Windows;
-using System.Windows.Controls;
 
 namespace ShaderForm2
 {
@@ -17,25 +16,9 @@ namespace ShaderForm2
 
 		internal static void Configure(MainWindow window, MainViewModel mainViewModel)
 		{
-			GridLengthConverter converter = new();
-			_ = Tracker.Configure<MainWindow>().Id(w => nameof(MainWindow), SystemParameters.PrimaryScreenWidth)
-				.Property(w => w.Left)
-				.Property(w => w.Top)
-				.Property(w => w.Width)
-				.Property(w => w.Height)
-				//.Property(w => w.LeftColumn.Width, "LeftColumn")
-				//.Property(w => w.RightColumn)
-				//.WhenPersistingProperty((f, p) => 
-				//{
-				//	if(p.Property.Contains("Column")) p.Value = converter.ConvertToString(((ColumnDefinition)p.Value).Width);
-				//})
-				//.WhenApplyingProperty((f, p) =>
-				//{
-				//	if(p.Property.Contains("Column")) ((ColumnDefinition)p.Value).Width = (GridLength)converter.ConvertFromString((string)p.Value);
-				//})
-				.WhenPersistingProperty((wnd, property) => property.Cancel = WindowState.Normal != wnd.WindowState)
-				.PersistOn(nameof(Window.Closing));
-			Tracker.Track(window);
+			//_ = Tracker.Configure<MainWindow>().Id(w => nameof(MainWindow), SystemParameters.PrimaryScreenWidth)
+			//	.WhenPersistingProperty((wnd, property) => property.Cancel = WindowState.Normal != wnd.WindowState)
+			//Tracker.Track(window);
 
 			_ = Tracker.Configure<MainViewModel>().Id(vm => nameof(MainViewModel))
 				.Property(vm => vm.CurrentFile, "")
@@ -43,6 +26,24 @@ namespace ShaderForm2
 				.Property(vm => vm.TopMost)
 				.PersistOn(nameof(Window.Closing), window);
 			Tracker.Track(mainViewModel);
+
+			PersistentSettings settings = new();
+
+			settings.AddProperty("left", () => window.Left, value => window.Left = value);
+			settings.AddProperty("top", () => window.Top, value => window.Top = value);
+			settings.AddProperty("Height", () => window.Height, value => window.Height = value);
+			settings.AddProperty("Width", () => window.Width, value => window.Width = value);
+			GridLengthConverter converter = new();
+			settings.AddProperty("LeftColumn", () => converter.ConvertToString(window.LeftColumn.Width), value => window.LeftColumn.Width = (GridLength)converter.ConvertFromString(value));
+			settings.AddProperty("RightColumn", () => converter.ConvertToString(window.RightColumn.Width), value => window.RightColumn.Width = (GridLength)converter.ConvertFromString(value));
+
+			//settings.AddProperty(() => mainViewModel.CurrentFile);
+
+			settings.Load();
+			window.Closing += (_, __) =>
+			{
+				settings.Store();
+			};
 		}
 	}
 }

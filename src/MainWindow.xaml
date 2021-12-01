@@ -7,13 +7,17 @@
         xmlns:glWpfControl="clr-namespace:OpenTK.Wpf;assembly=GLWpfControl"
         xmlns:self="clr-namespace:ShaderForm2"
         mc:Ignorable="d"
-        Title="{Binding ShaderViewModel.FilePath}" Height="450" Width="800" Topmost="{Binding TopMost}" Icon="Content/shaderform2.ico"
+        Title="{Binding ShaderViewModel.FilePath}" Height="450" Width="800" Icon="Content/shaderform2.ico"
+		Topmost="{Binding TopMost}" 
 		KeyDown="Window_KeyDown" KeyUp="Window_KeyUp"
 		AllowDrop="True" DragOver="Window_DragOver" Drop="Window_Drop">
 	<Window.Resources>
 		<BooleanToVisibilityConverter x:Key="BoolToVis" />
 		<self:UpdateViewModel x:Key="update"/>
 	</Window.Resources>
+	<Window.CommandBindings>
+		<!--<CommandBinding Command="ApplicationCommands.Close" CanExecute="CommandBindingClose_CanExecute" Executed="CommandBinding_Executed" />-->
+	</Window.CommandBindings>
 	<Grid>
 		<!--main client area-->
 		<Grid.ColumnDefinitions>
@@ -25,13 +29,16 @@
 			<ToolBarTray DockPanel.Dock="Top">
 				<ToolBar>
 					<Menu>
-						<MenuItem Header="_File" ItemsSource="{Binding RecentlyUsed}">
-							<ItemsControl.ItemTemplate>
-								<DataTemplate>
-									<MenuItem Header="{Binding}" IsCheckable="False"
-										  Command="{Binding DataContext.LoadCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window} }" CommandParameter="{Binding}" />
-								</DataTemplate>
-							</ItemsControl.ItemTemplate>
+						<MenuItem Header="_File" >
+							<MenuItem Header="_Recent Files" ItemsSource="{Binding RecentlyUsed}">
+								<ItemsControl.ItemTemplate>
+									<DataTemplate>
+										<MenuItem Header="{Binding}" IsCheckable="False"
+											  Command="{Binding DataContext.LoadCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window} }" CommandParameter="{Binding}" />
+									</DataTemplate>
+								</ItemsControl.ItemTemplate>
+							</MenuItem>
+							<MenuItem Command="ApplicationCommands.Close"/>
 						</MenuItem>
 						<MenuItem Header="_Window">
 							<MenuItem Header="Top most" IsCheckable="True" IsChecked="{Binding TopMost}"/>

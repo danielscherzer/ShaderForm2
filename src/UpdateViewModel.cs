@@ -25,13 +25,12 @@ namespace ShaderForm2
 				app.Shutdown();
 			}
 
-			_commandUpdate = new DelegateCommand(_ => UpdateAndClose(), _ => Available);
+			CommandUpdate = new DelegateCommand(_ => UpdateAndClose(), _ => Available);
 		}
 
 		public bool Available { get => _available; private set => Set(ref _available, value, _ => CommandManager.InvalidateRequerySuggested()); }
-		public ICommand CommandUpdate => _commandUpdate;
+		public ICommand CommandUpdate { get; }
 
 		private bool _available;
-		private readonly DelegateCommand _commandUpdate;
 	}
 }
