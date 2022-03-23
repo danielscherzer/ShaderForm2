@@ -18,11 +18,6 @@ namespace ShaderForm2
 		{
 			LoadCommand = new TypedDelegateCommand<string>(path => CurrentFile = path);
 			//TODO: shaderViewModel.PropertyChanged += (_, __) => Op
-			var args = Environment.GetCommandLineArgs().Skip(1);
-			if(args.Any())
-			{
-				CurrentFile = args.First();
-			}
 		}
 
 		public FirstPersonCamera Camera { get; } = new();

@@ -2,6 +2,7 @@ using OpenTK.Mathematics;
 using OpenTK.Wpf;
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -32,6 +33,11 @@ namespace ShaderForm2
 			_viewModel = new MainViewModel();
 			DataContext = _viewModel;
 			Persist.Configure(this, _viewModel);
+			var args = Environment.GetCommandLineArgs().Skip(1);
+			if (args.Any())
+			{
+				_viewModel.CurrentFile = args.First();
+			}
 		}
 
 		private void OpenTkControl_OnRender(TimeSpan delta)
