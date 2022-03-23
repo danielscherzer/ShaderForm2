@@ -5,6 +5,7 @@ using System.Reflection;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using Newtonsoft.Json.Linq;
 
 namespace ShaderForm2
 {
@@ -17,27 +18,43 @@ namespace ShaderForm2
 				//load values from file
 				var dic = JsonConvert.DeserializeObject<Dictionary<string, object>>(File.ReadAllText(fileName));
 				if (dic is not null) foreach ((string key, object value) in dic)
+				{
+					if(settings.TryGetValue(key, out var accessors))
 					{
-						settings[key].Setter(value);
+						accessors.Setter(value);
 					}
+				}
 			}
 		}
 
-		public void AddProperty<TType>(string name, Func<TType> getter, Action<TType> setter)
+		public void AddFromGetterSetter<TType>(string name, Func<TType> getter, Action<TType> setter)
 		{
-			//TODO: if(settings.ContainsKey(name))
-			settings.Add(name, new Prop(() => getter(), value => setter((TType)value)));
-}
+			//TODO:check if(settings.ContainsKey(name))
+			settings.Add(name, new Prop(() => getter(), value =>
+			{
+				TType? result;
+				if(value is JToken token)
+				{
+					result = token.ToObject<TType>();
+					if(result is not null) setter(result);
+				}
+				else
+				{
+					result = (TType)value;
+				}
+				if (result is not null) setter(result);
+			}));
+		}
 
-		public void AddProperty<ValueType>(Expression<Func<ValueType>> propertyExpression)
+		public void AddFromProperty<ValueType>(Expression<Func<ValueType>> propertyAccessExpression)
 		{
-			if (propertyExpression.Body is MemberExpression memberExpression)
+			if (propertyAccessExpression.Body is MemberExpression memberExpression)
 			{
 				if (memberExpression?.Member is PropertyInfo propertyInfo)
 				{
 					if (memberExpression.Expression is null) throw new ArgumentException("Invalid expression given");
 					var instance = Evaluate(memberExpression.Expression);
-					AddProperty(propertyInfo.Name, () => propertyInfo.GetValue(instance), value => propertyInfo.SetValue(instance, value));
+					AddFromGetterSetter(propertyInfo.Name, () => propertyInfo.GetValue(instance), value => propertyInfo.SetValue(instance, value));
 					return;
 				}
 			}
@@ -47,7 +64,7 @@ namespace ShaderForm2
 		public void Store()
 		{
 			var dic = settings.ToDictionary(prop => prop.Key, prop => prop.Value.Getter());
-			var text = JsonConvert.SerializeObject(dic);
+			var text = JsonConvert.SerializeObject(dic, Formatting.Indented);
 			File.WriteAllText(fileName, text);
 		}
 

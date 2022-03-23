@@ -17,7 +17,6 @@ namespace ShaderForm2
 			Assembly assembly = Assembly.GetExecutingAssembly();
 			_ = update.CheckDownloadNewVersionAsync("danielScherzer", "ShaderForm2", assembly.GetName().Version, Path.GetTempPath());
 
-
 			void UpdateAndClose()
 			{
 				_ = update.StartInstall(Path.GetDirectoryName(assembly.Location));

@@ -22,16 +22,15 @@
   </ItemGroup>
   
   <ItemGroup>
-    <PackageReference Include="AutoUpdateViaGitHubRelease" Version="0.1.51" />
+    <PackageReference Include="AutoUpdateViaGitHubRelease" Version="0.1.53" />
     <PackageReference Include="GLSLhelper" Version="0.3.52" />
-    <PackageReference Include="HandyControls" Version="3.3.8.1" />
-    <PackageReference Include="Jot" Version="2.1.11" />
+    <PackageReference Include="HandyControls" Version="3.3.9" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="OpenTK" Version="4.6.7">
       <NoWarn>NU1608</NoWarn>
     </PackageReference>
     <PackageReference Include="OpenTK.GLWpfControl" Version="4.1.0" />
-    <PackageReference Include="ReactiveUI.WPF" Version="16.3.10" />
+    <PackageReference Include="ReactiveUI.WPF" Version="16.4.1" />
     <PackageReference Include="System.Reactive" Version="5.0.0" />
     <PackageReference Include="Zenseless.OpenTK" Version="0.1.36" />
     <PackageReference Include="Zenseless.Patterns" Version="0.6.18" />

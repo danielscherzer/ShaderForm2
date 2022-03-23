@@ -1,8 +1,6 @@
 ﻿using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using Zenseless.OpenTK;
@@ -21,6 +19,7 @@ namespace ShaderForm2
 
 		public void Load(string filePath)
 		{
+			if (!File.Exists(filePath)) return;
 			var fragmentSource = File.ReadAllText(filePath);
 			var dir = Path.GetDirectoryName(filePath) ?? throw new ApplicationException("Shader file path without directory information.");
 			fragmentSource = GLSLhelper.Transformation.ExpandIncludes(fragmentSource, fileName => File.ReadAllText(Path.Combine(dir, fileName)));

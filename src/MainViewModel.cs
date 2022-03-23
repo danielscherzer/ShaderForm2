@@ -17,6 +17,12 @@ namespace ShaderForm2
 		public MainViewModel()
 		{
 			LoadCommand = new TypedDelegateCommand<string>(path => CurrentFile = path);
+			//TODO: shaderViewModel.PropertyChanged += (_, __) => Op
+			var args = Environment.GetCommandLineArgs().Skip(1);
+			if(args.Any())
+			{
+				CurrentFile = args.First();
+			}
 		}
 
 		public FirstPersonCamera Camera { get; } = new();
@@ -30,6 +36,7 @@ namespace ShaderForm2
 			get => ShaderViewModel.FilePath;
 			set
 			{
+				if (string.IsNullOrEmpty(value)) return;
 				ShaderViewModel.Load(value);
 				//TODO: remove Application.Current.Dispatcher in VM
 				Application.Current.Dispatcher.Invoke(() => RecentlyUsed.Insert(0, value));
@@ -41,7 +48,7 @@ namespace ShaderForm2
 			}
 		}
 
-		public bool IsRunning { get; internal set; }
+		public bool IsRunning { get => _isRunning; set => Set(ref _isRunning, value); }
 		public bool TopMost { get => _topMost; set => Set(ref _topMost, value); }
 
 		public ObservableCollection<string> RecentlyUsed { get => _recentlyUsed; set => Set(ref _recentlyUsed, value/*, coll => BindingOperations.EnableCollectionSynchronization(coll, _lockObj)*/); }
@@ -111,6 +118,7 @@ namespace ShaderForm2
 		private Vector3 movement;
 		private Vector2 lastMouse;
 		private bool _topMost;
-		//private Movement movement = new();
+		private bool _isRunning;
+		//TODO: private Movement movement = new();
 	}
 }

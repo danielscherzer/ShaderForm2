@@ -23,7 +23,9 @@ namespace ShaderForm2
 				MajorVersion = 4,
 				MinorVersion = 5,
 				GraphicsProfile = OpenTK.Windowing.Common.ContextProfile.Compatability,
+				RenderContinuously = false,
 				UseDeviceDpi = true,
+			
 			};
 			OpenTkControl.Start(settings);
 
@@ -47,6 +49,7 @@ namespace ShaderForm2
 			static bool Pressed(MouseButtonState state) => MouseButtonState.Pressed == state;
 			int button = Pressed(e.LeftButton) ? 1 : (Pressed(e.RightButton) ? 3 : (Pressed(e.MiddleButton) ? 2 : 0));
 			_viewModel.SetMouse(position.X, position.Y, button);
+			OpenTkControl.InvalidateVisual();
 		}
 
 		private void OpenTkControl_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -69,9 +72,10 @@ namespace ShaderForm2
 			}
 		}
 
-		private void Button_Click(object sender, RoutedEventArgs e)
+		private void ButtonPlay_Click(object sender, RoutedEventArgs e)
 		{
 			_viewModel.IsRunning = !_viewModel.IsRunning;
+			OpenTkControl.RenderContinuously = _viewModel.IsRunning;
 		}
 
 		private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -81,14 +85,16 @@ namespace ShaderForm2
 				case Key.Escape: Close(); break;
 			}
 			_viewModel.StartMovement(e.Key);
+			OpenTkControl.InvalidateVisual();
 		}
 
 		private void Window_KeyUp(object sender, KeyEventArgs e)
 		{
 			_viewModel.StopMovement(e.Key);
+			OpenTkControl.InvalidateVisual();
 		}
 
-		private void Button_Click_1(object sender, RoutedEventArgs e)
+		private void ResetCameraButton_Click(object sender, RoutedEventArgs e)
 		{
 			_viewModel.Camera.Heading = 0f;
 			_viewModel.Camera.Tilt = 0f;
