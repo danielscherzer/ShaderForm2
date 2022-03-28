@@ -14,11 +14,8 @@
 		AllowDrop="True" DragOver="Window_DragOver" Drop="Window_Drop">
 	<Window.Resources>
 		<BooleanToVisibilityConverter x:Key="BoolToVis" />
-		<self:UpdateViewModel x:Key="update"/>
+		<self:Update x:Key="update"/>
 	</Window.Resources>
-	<Window.CommandBindings>
-		<CommandBinding Command="ApplicationCommands.Close" CanExecute="CommandBindingClose_CanExecute" Executed="CommandBinding_Executed" />
-	</Window.CommandBindings>
 	<Grid>
 		<!--main client area-->
 		<Grid.ColumnDefinitions>
@@ -39,7 +36,7 @@
 									</DataTemplate>
 								</ItemsControl.ItemTemplate>
 							</MenuItem>
-							<MenuItem Command="ApplicationCommands.Close"/>
+							<MenuItem Header="_Exit" DataContext="{StaticResource update}" Command="{Binding CommandClose}"/>
 						</MenuItem>
 						<MenuItem Header="_Window">
 							<MenuItem Header="Top most" IsCheckable="True" IsChecked="{Binding TopMost}"/>

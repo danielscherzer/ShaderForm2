@@ -1,5 +1,4 @@
-﻿using AutoUpdateViaGitHubRelease;
-using ShaderForm2.WPFTools;
+﻿using ShaderForm2.WPFTools;
 using System.IO;
 using System.Reflection;
 using System.Windows;
@@ -8,11 +7,11 @@ using Zenseless.Patterns;
 
 namespace ShaderForm2
 {
-	internal class UpdateViewModel : NotifyPropertyChanged
+	internal class Update : NotifyPropertyChanged
 	{
-		public UpdateViewModel()
+		public Update()
 		{
-			Update update = new();
+			AutoUpdateViaGitHubRelease.Update update = new();
 			update.PropertyChanged += (s, a) => Available = update.Available;
 			Assembly assembly = Assembly.GetExecutingAssembly();
 			_ = update.CheckDownloadNewVersionAsync("danielScherzer", "ShaderForm2", assembly.GetName().Version, Path.GetTempPath());
@@ -25,10 +24,12 @@ namespace ShaderForm2
 			}
 
 			CommandUpdate = new DelegateCommand(_ => UpdateAndClose(), _ => Available);
+			CommandClose = new DelegateCommand(_ => Application.Current.Shutdown(), _ => true);
 		}
 
 		public bool Available { get => _available; private set => Set(ref _available, value, _ => CommandManager.InvalidateRequerySuggested()); }
 		public ICommand CommandUpdate { get; }
+		public ICommand CommandClose { get; }
 
 		private bool _available;
 	}

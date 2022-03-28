@@ -90,6 +90,7 @@ namespace ShaderForm2
 			switch (e.Key)
 			{
 				case Key.Escape: Close(); break;
+				case Key.Space: ButtonPlay_Click(this, e); break;
 			}
 			_viewModel.StartMovement(e.Key);
 			OpenTkControl.InvalidateVisual();
@@ -108,9 +109,5 @@ namespace ShaderForm2
 			_viewModel.Camera.Position = Vector3.Zero;
 			OpenTkControl.InvalidateVisual();
 		}
-
-		private void CommandBindingClose_CanExecute(object sender, CanExecuteRoutedEventArgs e) => e.CanExecute = true;
-
-		private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e) => Close();
 	}
 }
