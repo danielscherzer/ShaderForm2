@@ -1,7 +1,6 @@
 using OpenTK.Mathematics;
 using OpenTK.Wpf;
 using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -38,6 +37,8 @@ namespace ShaderForm2
 			{
 				_viewModel.CurrentFile = args.First();
 			}
+			_viewModel.ShaderViewModel.PropertyChanged += (s, e) => OpenTkControl.InvalidateVisual();
+			_viewModel.Camera.PropertyChanged += (s, e) => OpenTkControl.InvalidateVisual();
 		}
 
 		private void OpenTkControl_OnRender(TimeSpan delta)
@@ -105,9 +106,8 @@ namespace ShaderForm2
 			_viewModel.Camera.Heading = 0f;
 			_viewModel.Camera.Tilt = 0f;
 			_viewModel.Camera.Position = Vector3.Zero;
+			OpenTkControl.InvalidateVisual();
 		}
-
-		private void MenuItem_Click(object sender, RoutedEventArgs e) => Close();
 
 		private void CommandBindingClose_CanExecute(object sender, CanExecuteRoutedEventArgs e) => e.CanExecute = true;
 

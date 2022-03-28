@@ -17,7 +17,7 @@ namespace ShaderForm2
 		public MainViewModel()
 		{
 			LoadCommand = new TypedDelegateCommand<string>(path => CurrentFile = path);
-			//TODO: shaderViewModel.PropertyChanged += (_, __) => Op
+			//shaderViewModel.PropertyChanged += (_, __) => Op
 		}
 
 		public FirstPersonCamera Camera { get; } = new();

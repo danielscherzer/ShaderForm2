@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using System.Linq;
-using System.Windows;
+﻿using System.Windows;
 
 namespace ShaderForm2
 {
