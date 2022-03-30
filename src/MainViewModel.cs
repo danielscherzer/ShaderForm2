@@ -28,18 +28,21 @@ namespace ShaderForm2
 
 		public string CurrentFile
 		{
-			get => ShaderViewModel.FilePath;
+			get => _currentFile;
 			set
 			{
 				if (string.IsNullOrEmpty(value)) return;
-				ShaderViewModel.Load(value);
+				bool exists = ShaderViewModel.Load(value);
 				//TODO: remove Application.Current.Dispatcher in VM
 				Application.Current.Dispatcher.Invoke(() => RecentlyUsed.Insert(0, value));
 				IEnumerable<string> distinct = RecentlyUsed.Distinct();
 				RecentlyUsed = new ObservableCollection<string>(distinct);
 				_fileChangeSubscription?.Dispose();
 				_fileChangeSubscription = TrackedFileObservable.DelayedLoad(value).ObserveOnDispatcher().Subscribe(fileName => ShaderViewModel.Load(fileName));
-				RaisePropertyChanged();
+				if(exists)
+				{
+					Set(ref _currentFile, value);
+				}
 			}
 		}
 
@@ -114,6 +117,7 @@ namespace ShaderForm2
 		private Vector2 lastMouse;
 		private bool _topMost;
 		private bool _isRunning;
+		private string _currentFile = string.Empty;
 		//TODO: private Movement movement = new();
 	}
 }

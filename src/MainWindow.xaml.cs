@@ -37,7 +37,7 @@ namespace ShaderForm2
 			{
 				_viewModel.CurrentFile = args.First();
 			}
-			_viewModel.ShaderViewModel.PropertyChanged += (s, e) => OpenTkControl.InvalidateVisual();
+			_viewModel.PropertyChanged += (s, e) => OpenTkControl.InvalidateVisual();
 			_viewModel.Camera.PropertyChanged += (s, e) => OpenTkControl.InvalidateVisual();
 		}
 

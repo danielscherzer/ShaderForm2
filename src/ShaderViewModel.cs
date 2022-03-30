@@ -17,9 +17,9 @@ namespace ShaderForm2
 			ResolveDefaultUniformLocation(_shaderProgram);
 		}
 
-		public void Load(string filePath)
+		public bool Load(string filePath)
 		{
-			if (!File.Exists(filePath)) return;
+			if (!File.Exists(filePath)) return false;
 			var fragmentSource = File.ReadAllText(filePath);
 			var dir = Path.GetDirectoryName(filePath) ?? throw new ApplicationException("Shader file path without directory information.");
 			fragmentSource = GLSLhelper.Transformation.ExpandIncludes(fragmentSource, fileName => File.ReadAllText(Path.Combine(dir, fileName)));
@@ -34,8 +34,7 @@ namespace ShaderForm2
 				_shaderProgram = newShaderProgram;
 			}
 			ResolveDefaultUniformLocation(_shaderProgram);
-			FilePath = filePath;
-			//RaisePropertyChanged(nameof(FilePath));
+			return true;
 		}
 
 		[Description("Left-handed coordinate system with the z-axis pointing in the view direction")]
@@ -56,8 +55,6 @@ namespace ShaderForm2
 		[Description("Left-handed coordinate system with the z-axis pointing in the view direction")]
 		public float CamRotZ { get => camRotZ; set => Set(ref camRotZ, value); }
 
-		public string FilePath { get => _filePath; private set => Set(ref _filePath, value); }
-		
 		[Description("Mouse.X\nMouse.Y\nMouse.Z: 1 == left button, 2 == middle button, 3 == right button")]
 		public Vector3 Mouse { get => _mouse; set => Set(ref _mouse, value); }
 
@@ -100,7 +97,6 @@ namespace ShaderForm2
 		private float camRotX;
 		private float camRotY;
 		private float camRotZ;
-		private string _filePath = "";
 		private int _locResolution = -1;
 		private int _locTime = -1;
 		private int _locMouse = -1;
