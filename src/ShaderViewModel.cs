@@ -24,13 +24,18 @@ namespace ShaderForm2
 			var dir = Path.GetDirectoryName(filePath) ?? throw new ApplicationException("Shader file path without directory information.");
 			fragmentSource = GLSLhelper.Transformation.ExpandIncludes(fragmentSource, fileName => File.ReadAllText(Path.Combine(dir, fileName)));
 			var newShaderProgram = LoadFragmentShader(fragmentSource);
-			if(newShaderProgram is not null)
+			_shaderProgram.Dispose();
+			if (newShaderProgram is null)
 			{
-				_shaderProgram.Dispose();
-				_shaderProgram = newShaderProgram;
-				ResolveDefaultUniformLocation(_shaderProgram);
-				FilePath = filePath;
+				_shaderProgram = LoadFragmentShader(_defaultFragmentSource) ?? throw new ApplicationException("Could not load default shader.");
 			}
+			else
+			{
+				_shaderProgram = newShaderProgram;
+			}
+			ResolveDefaultUniformLocation(_shaderProgram);
+			FilePath = filePath;
+			//RaisePropertyChanged(nameof(FilePath));
 		}
 
 		[Description("Left-handed coordinate system with the z-axis pointing in the view direction")]
