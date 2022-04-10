@@ -63,16 +63,16 @@ namespace ShaderForm2
 		{
 			_viewModel.Resize(OpenTkControl.FrameBufferWidth, OpenTkControl.FrameBufferHeight);
 		}
-
-		private void Window_DragOver(object sender, DragEventArgs dragInfo)
+		private void Window_DragEnter(object sender, DragEventArgs dragInfo)
 		{
-			dragInfo.Effects = DragDropEffects.Link;
-			dragInfo.Handled = true;
+			var validFormat = dragInfo.Data.GetDataPresent(DataFormats.FileDrop, true);
+			dragInfo.Effects = validFormat ? DragDropEffects.All : DragDropEffects.None;
 		}
 
 		private void Window_Drop(object sender, DragEventArgs dragInfo)
 		{
-			string[] fileNames = (string[])dragInfo.Data.GetData(DataFormats.FileDrop);
+			string[] fileNames = (string[])dragInfo.Data.GetData(DataFormats.FileDrop, true);
+			if (fileNames is null) return;
 			foreach (string fileName in fileNames)
 			{
 				_viewModel.CurrentFile = fileName;

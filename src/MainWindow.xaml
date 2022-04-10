@@ -11,7 +11,7 @@
         Title="{Binding CurrentFile}" Height="450" Width="800" Icon="Content/shaderform2.ico"
 		Topmost="{Binding TopMost}" 
 		KeyDown="Window_KeyDown" KeyUp="Window_KeyUp"
-		AllowDrop="True" DragOver="Window_DragOver" Drop="Window_Drop">
+		AllowDrop="True" Drop="Window_Drop" DragEnter="Window_DragEnter">
 	<Window.Resources>
 		<BooleanToVisibilityConverter x:Key="BoolToVis" />
 		<self:Update x:Key="update"/>
