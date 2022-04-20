@@ -16,55 +16,53 @@
 		<BooleanToVisibilityConverter x:Key="BoolToVis" />
 		<self:Update x:Key="update"/>
 	</Window.Resources>
-	<Grid>
-		<!--main client area-->
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition x:Name="LeftColumn" Width="*" />
-			<ColumnDefinition Width="10" />
-			<ColumnDefinition x:Name="RightColumn" Width="*" />
-		</Grid.ColumnDefinitions>
-		<DockPanel Grid.Column="0">
-			<ToolBarTray DockPanel.Dock="Top">
-				<ToolBar>
-					<Menu>
-						<MenuItem Header="_File" >
-							<MenuItem Header="_Recent Files" ItemsSource="{Binding RecentlyUsed}">
-								<ItemsControl.ItemTemplate>
-									<DataTemplate>
-										<MenuItem Header="{Binding}" IsCheckable="False"
+	<DockPanel>
+		<ToolBarTray DockPanel.Dock="Top">
+			<ToolBar>
+				<Menu>
+					<MenuItem Header="_File" >
+						<MenuItem Header="_Recent Files" ItemsSource="{Binding RecentlyUsed}">
+							<ItemsControl.ItemTemplate>
+								<DataTemplate>
+									<MenuItem Header="{Binding}" IsCheckable="False"
 											  Command="{Binding DataContext.LoadCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window} }" CommandParameter="{Binding}" />
-									</DataTemplate>
-								</ItemsControl.ItemTemplate>
-							</MenuItem>
-							<MenuItem Header="_Exit" DataContext="{StaticResource update}" Command="{Binding CommandClose}"/>
+								</DataTemplate>
+							</ItemsControl.ItemTemplate>
 						</MenuItem>
-						<MenuItem Header="_Window">
-							<MenuItem Header="Top most" IsCheckable="True" IsChecked="{Binding TopMost}"/>
-						</MenuItem>
-					</Menu>
-				</ToolBar>
-			</ToolBarTray>
-			<StatusBar DockPanel.Dock="Bottom">
-				<Button Click="ButtonPlay_Click">Play</Button>
-				<Button Click="ResetCameraButton_Click">Reset Camera</Button>
-				<Button Background="LightCoral"
+						<MenuItem Header="_Exit" DataContext="{StaticResource update}" Command="{Binding CommandClose}"/>
+					</MenuItem>
+					<MenuItem Header="_Window">
+						<MenuItem Header="Top most" IsCheckable="True" IsChecked="{Binding TopMost}"/>
+					</MenuItem>
+					<MenuItem Header="_Play" IsCheckable="True" IsChecked="{Binding IsRunning}"/>
+					<MenuItem Header="_Reset Camera" Click="ResetCameraButton_Click"/>
+				<MenuItem Header="Update available!" Background="LightCoral"
 						DataContext="{DynamicResource update}" 
 						Visibility="{Binding Available, Converter={StaticResource BoolToVis}}" 
-						Command="{Binding CommandUpdate}">
-					Update available!
-				</Button>
-			</StatusBar>
-			<ScrollViewer VerticalScrollBarVisibility="Auto">
-				<StackPanel>
-					<hc:PropertyGrid SelectedObject="{Binding ShaderViewModel}" ShowSortButton="False"/>
-					<hc:PropertyGrid SelectedObject="{Binding Camera}" ShowSortButton="False"/>
-				</StackPanel>
-			</ScrollViewer>
-		</DockPanel>
-		<GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-		<glWpfControl:GLWpfControl Grid.Column="2" x:Name="OpenTkControl" SnapsToDevicePixels="True" Focusable="True"
-								   Render="OpenTkControl_OnRender" 
-								MouseDown="OpenTkControl_Mouse" MouseMove="OpenTkControl_Mouse" MouseUp="OpenTkControl_Mouse"
-								SizeChanged="OpenTkControl_SizeChanged"/>
-	</Grid>
+						Command="{Binding CommandUpdate}"/>
+				</Menu>
+			</ToolBar>
+		</ToolBarTray>
+		<StatusBar DockPanel.Dock="Bottom">
+		</StatusBar>
+		<Grid>
+			<!--main client area-->
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition x:Name="LeftColumn" Width="*" />
+				<ColumnDefinition Width="10" />
+				<ColumnDefinition x:Name="RightColumn" Width="*" />
+			</Grid.ColumnDefinitions>
+			<ScrollViewer  Grid.Column="0" VerticalScrollBarVisibility="Auto">
+			<StackPanel>
+				<hc:PropertyGrid SelectedObject="{Binding ShaderViewModel}" ShowSortButton="False"/>
+				<hc:PropertyGrid SelectedObject="{Binding Camera}" ShowSortButton="False"/>
+			</StackPanel>
+		</ScrollViewer>
+			<GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+			<glWpfControl:GLWpfControl Grid.Column="2" x:Name="OpenTkControl" SnapsToDevicePixels="True" Focusable="True"
+									   Render="OpenTkControl_OnRender" 
+									MouseDown="OpenTkControl_Mouse" MouseMove="OpenTkControl_Mouse" MouseUp="OpenTkControl_Mouse"
+									SizeChanged="OpenTkControl_SizeChanged"/>
+		</Grid>
+	</DockPanel>
 </Window>

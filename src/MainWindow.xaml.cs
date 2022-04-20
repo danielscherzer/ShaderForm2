@@ -37,7 +37,11 @@ namespace ShaderForm2
 			{
 				_viewModel.CurrentFile = args.First();
 			}
-			_viewModel.PropertyChanged += (s, e) => OpenTkControl.InvalidateVisual();
+			_viewModel.PropertyChanged += (s, e) =>
+			{
+				OpenTkControl.RenderContinuously = _viewModel.IsRunning;
+				OpenTkControl.InvalidateVisual();
+			};
 			_viewModel.Camera.PropertyChanged += (s, e) => OpenTkControl.InvalidateVisual();
 		}
 
@@ -79,18 +83,12 @@ namespace ShaderForm2
 			}
 		}
 
-		private void ButtonPlay_Click(object sender, RoutedEventArgs e)
-		{
-			_viewModel.IsRunning = !_viewModel.IsRunning;
-			OpenTkControl.RenderContinuously = _viewModel.IsRunning;
-		}
-
 		private void Window_KeyDown(object sender, KeyEventArgs e)
 		{
 			switch (e.Key)
 			{
 				case Key.Escape: Close(); break;
-				case Key.Space: ButtonPlay_Click(this, e); break;
+				case Key.Space: _viewModel.IsRunning = !_viewModel.IsRunning; break;
 			}
 			_viewModel.StartMovement(e.Key);
 			OpenTkControl.InvalidateVisual();
