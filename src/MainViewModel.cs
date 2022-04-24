@@ -41,7 +41,7 @@ namespace ShaderForm2
 				_fileChangeSubscription = TrackedFileObservable
 					.DelayedLoad(value)
 					.ObserveOnDispatcher()
-					.Subscribe(fileName => CurrentFile = fileName);
+					.Subscribe(fileName => { shaderViewModel.Load(fileName); RaisePropertyChanged(); });
 				if(exists)
 				{
 					Set(ref _currentFile, value);
