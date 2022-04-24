@@ -14,10 +14,10 @@
 		AllowDrop="True" Drop="Window_Drop" DragEnter="Window_DragEnter">
 	<Window.Resources>
 		<BooleanToVisibilityConverter x:Key="BoolToVis" />
-		<self:Update x:Key="update"/>
+		<self:Update x:Key="update" x:Name="update"/>
 	</Window.Resources>
 	<DockPanel>
-		<ToolBarTray DockPanel.Dock="Top">
+		<ToolBarTray x:Name="menuTray" DockPanel.Dock="Top">
 			<ToolBar>
 				<Menu>
 					<MenuItem Header="_File" >
@@ -33,10 +33,11 @@
 					</MenuItem>
 					<MenuItem Header="_Window">
 						<MenuItem Header="Top most" IsCheckable="True" IsChecked="{Binding TopMost}"/>
+						<!--<MenuItem Header="Show Menu" IsCheckable="True" IsChecked="{Binding ShowMenu}"/>-->
 					</MenuItem>
 					<MenuItem Header="_Play" IsCheckable="True" IsChecked="{Binding IsRunning}"/>
 					<MenuItem Header="_Reset Camera" Click="ResetCameraButton_Click"/>
-				<MenuItem Header="Update available!" Background="LightCoral"
+				<MenuItem Header="Update available!" Foreground="LightCoral"
 						DataContext="{DynamicResource update}" 
 						Visibility="{Binding Available, Converter={StaticResource BoolToVis}}" 
 						Command="{Binding CommandUpdate}"/>

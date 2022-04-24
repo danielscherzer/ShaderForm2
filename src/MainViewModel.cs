@@ -38,7 +38,10 @@ namespace ShaderForm2
 				IEnumerable<string> distinct = RecentlyUsed.Distinct();
 				RecentlyUsed = new ObservableCollection<string>(distinct);
 				_fileChangeSubscription?.Dispose();
-				_fileChangeSubscription = TrackedFileObservable.DelayedLoad(value).ObserveOnDispatcher().Subscribe(fileName => ShaderViewModel.Load(fileName));
+				_fileChangeSubscription = TrackedFileObservable
+					.DelayedLoad(value)
+					.ObserveOnDispatcher()
+					.Subscribe(fileName => CurrentFile = fileName);
 				if(exists)
 				{
 					Set(ref _currentFile, value);
@@ -48,6 +51,7 @@ namespace ShaderForm2
 
 		public bool IsRunning { get => _isRunning; set => Set(ref _isRunning, value); }
 		public bool TopMost { get => _topMost; set => Set(ref _topMost, value); }
+		public bool ShowMenu { get => _showMenu; set => Set(ref _showMenu, value); }
 
 		public ObservableCollection<string> RecentlyUsed { get => _recentlyUsed; set => Set(ref _recentlyUsed, value/*, coll => BindingOperations.EnableCollectionSynchronization(coll, _lockObj)*/); }
 
@@ -118,6 +122,7 @@ namespace ShaderForm2
 		private bool _topMost;
 		private bool _isRunning;
 		private string _currentFile = string.Empty;
+		private bool _showMenu = true;
 		//TODO: private Movement movement = new();
 	}
 }

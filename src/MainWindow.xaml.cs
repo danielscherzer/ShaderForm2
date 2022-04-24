@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using Zenseless.PersistentSettings;
 
 namespace ShaderForm2
 {
@@ -18,17 +19,7 @@ namespace ShaderForm2
 		public MainWindow()
 		{
 			InitializeComponent();
-			GLWpfControlSettings settings = new()
-			{
-				MajorVersion = 4,
-				MinorVersion = 5,
-				GraphicsProfile = OpenTK.Windowing.Common.ContextProfile.Compatability,
-				RenderContinuously = false,
-				UseDeviceDpi = true,
-			
-			};
-			OpenTkControl.Start(settings);
-
+			SetupOpenTK();
 			_viewModel = new MainViewModel();
 			DataContext = _viewModel;
 			Persist.Configure(this, _viewModel);
@@ -43,6 +34,34 @@ namespace ShaderForm2
 				OpenTkControl.InvalidateVisual();
 			};
 			_viewModel.Camera.PropertyChanged += (s, e) => OpenTkControl.InvalidateVisual();
+			InputManager.Current.EnterMenuMode += InputManager_MenuModeToggled;
+			InputManager.Current.LeaveMenuMode += InputManager_MenuModeToggled;
+		}
+
+		private void SetupOpenTK()
+		{
+			GLWpfControlSettings settings = new()
+			{
+				MajorVersion = 4,
+				MinorVersion = 5,
+				GraphicsProfile = OpenTK.Windowing.Common.ContextProfile.Compatability,
+				RenderContinuously = false,
+				UseDeviceDpi = true,
+
+			};
+			OpenTkControl.Start(settings);
+		}
+
+		private void InputManager_MenuModeToggled(object? sender, EventArgs e)
+		{
+			if (InputManager.Current.IsInMenuMode)
+			//{
+			//	menuTray.Height = 0; // 0 to hide the menu
+			//}
+			//else
+			{
+				menuTray.Height = double.NaN; // NaN to reset the height (auto height)
+			}
 		}
 
 		private void OpenTkControl_OnRender(TimeSpan delta)
@@ -96,6 +115,13 @@ namespace ShaderForm2
 
 		private void Window_KeyUp(object sender, KeyEventArgs e)
 		{
+			//switch (e.Key)
+			//{
+			//	case Key.System:
+			//		if(!InputManager.Current.IsInMenuMode)
+			//			menuTray.Height = 0 == menuTray.Height ? double.NaN : 0;
+			//		break;
+			//}
 			_viewModel.StopMovement(e.Key);
 			OpenTkControl.InvalidateVisual();
 		}
