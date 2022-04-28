@@ -33,7 +33,7 @@
 					</MenuItem>
 					<MenuItem Header="_Window">
 						<MenuItem Header="Top most" IsCheckable="True" IsChecked="{Binding TopMost}"/>
-						<!--<MenuItem Header="Show Menu" IsCheckable="True" IsChecked="{Binding ShowMenu}"/>-->
+						<MenuItem Header="Show Menu" IsCheckable="True" IsChecked="{Binding ShowMenu}"/>
 					</MenuItem>
 					<MenuItem Header="_Play" IsCheckable="True" IsChecked="{Binding IsRunning}"/>
 					<MenuItem Header="_Reset Camera" Click="ResetCameraButton_Click"/>

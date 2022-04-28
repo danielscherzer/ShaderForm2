@@ -22,20 +22,45 @@ namespace ShaderForm2
 			SetupOpenTK();
 			_viewModel = new MainViewModel();
 			DataContext = _viewModel;
+			_viewModel.PropertyChanged += (s, e) =>
+			{
+				OpenTkControl.RenderContinuously = _viewModel.IsRunning;
+				if(e.PropertyName == nameof(MainViewModel.ShowMenu))
+				{
+					if(_viewModel.ShowMenu)
+					{
+						menuTray.Height = double.NaN; // NaN to reset the height (auto height)
+					}
+					else
+					{
+						menuTray.Height = 0.0;
+					}
+				}
+				OpenTkControl.InvalidateVisual();
+			};
+			_viewModel.Camera.PropertyChanged += (s, e) => OpenTkControl.InvalidateVisual();
+			InputManager.Current.EnterMenuMode += Current_EnterMenuMode;
+			InputManager.Current.LeaveMenuMode += Current_LeaveMenuMode;
+
 			Persist.Configure(this, _viewModel);
 			var args = Environment.GetCommandLineArgs().Skip(1);
 			if (args.Any())
 			{
 				_viewModel.CurrentFile = args.First();
 			}
-			_viewModel.PropertyChanged += (s, e) =>
+		}
+
+		private void Current_LeaveMenuMode(object? sender, EventArgs e)
+		{
+			if (!_viewModel.ShowMenu)
 			{
-				OpenTkControl.RenderContinuously = _viewModel.IsRunning;
-				OpenTkControl.InvalidateVisual();
-			};
-			_viewModel.Camera.PropertyChanged += (s, e) => OpenTkControl.InvalidateVisual();
-			InputManager.Current.EnterMenuMode += InputManager_MenuModeToggled;
-			InputManager.Current.LeaveMenuMode += InputManager_MenuModeToggled;
+				menuTray.Height = 0; // 0 to hide the menu
+			}
+		}
+
+		private void Current_EnterMenuMode(object? sender, EventArgs e)
+		{
+			menuTray.Height = double.NaN;
 		}
 
 		private void SetupOpenTK()
@@ -50,18 +75,6 @@ namespace ShaderForm2
 
 			};
 			OpenTkControl.Start(settings);
-		}
-
-		private void InputManager_MenuModeToggled(object? sender, EventArgs e)
-		{
-			if (InputManager.Current.IsInMenuMode)
-			//{
-			//	menuTray.Height = 0; // 0 to hide the menu
-			//}
-			//else
-			{
-				menuTray.Height = double.NaN; // NaN to reset the height (auto height)
-			}
 		}
 
 		private void OpenTkControl_OnRender(TimeSpan delta)

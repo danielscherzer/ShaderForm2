@@ -31,6 +31,7 @@ namespace ShaderForm2
 			settings.AddFromProperty(() => mainViewModel.CurrentFile);
 			//settings.AddFromProperty(() => mainViewModel.RecentlyUsed);
 			settings.AddFromProperty(() => mainViewModel.TopMost);
+			settings.AddFromProperty(() => mainViewModel.ShowMenu);
 
 			settings.Load();
 			window.Closing += (_, __) =>
