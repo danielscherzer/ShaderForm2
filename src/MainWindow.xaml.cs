@@ -116,7 +116,7 @@ namespace ShaderForm2
 		}
 
 		private void Window_KeyDown(object sender, KeyEventArgs e)
-		{
+		{	if (e.IsRepeat) return;
 			switch (e.Key)
 			{
 				case Key.Escape: Close(); break;
