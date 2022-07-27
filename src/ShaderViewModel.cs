@@ -88,8 +88,8 @@ namespace ShaderForm2
 		}
 
 		private static readonly EmbeddedResourceDirectory _dir = new(nameof(ShaderForm2) + ".content");
-		private static readonly string _defaultVertexSource = _dir.Resource("screenQuad.vert").OpenText();
-		private static readonly string _defaultFragmentSource = _dir.Resource("checker.frag").OpenText();
+		private static readonly string _defaultVertexSource = _dir.Resource("screenQuad.vert").AsString();
+		private static readonly string _defaultFragmentSource = _dir.Resource("checker.frag").AsString();
 
 		private float camPosX;
 		private float camPosY;
