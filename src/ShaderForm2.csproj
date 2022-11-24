@@ -22,17 +22,17 @@
   </ItemGroup>
   
   <ItemGroup>
-    <PackageReference Include="AutoUpdateViaGitHubRelease" Version="0.1.58" />
-    <PackageReference Include="GLSLhelper" Version="0.3.58" />
-    <PackageReference Include="HandyControls" Version="3.3.11" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="OpenTK" Version="4.7.4" />
+    <PackageReference Include="AutoUpdateViaGitHubRelease" Version="0.1.59" />
+    <PackageReference Include="GLSLhelper" Version="0.3.59" />
+    <PackageReference Include="HandyControls" Version="3.4.4" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+    <PackageReference Include="OpenTK" Version="4.7.5" />
     <PackageReference Include="OpenTK.GLWpfControl" Version="4.2.2" />
     <PackageReference Include="System.Reactive" Version="5.0.0" />
-    <PackageReference Include="Zenseless.OpenTK" Version="0.1.46" />
-    <PackageReference Include="Zenseless.Patterns" Version="0.6.20" />
-    <PackageReference Include="Zenseless.PersistentSettings" Version="0.1.7" />
-    <PackageReference Include="Zenseless.Resources" Version="0.1.11" />
+    <PackageReference Include="Zenseless.OpenTK" Version="0.1.50" />
+    <PackageReference Include="Zenseless.Patterns" Version="0.6.21" />
+    <PackageReference Include="Zenseless.PersistentSettings" Version="0.1.8" />
+    <PackageReference Include="Zenseless.Resources" Version="0.1.12" />
   </ItemGroup>
   
 </Project>

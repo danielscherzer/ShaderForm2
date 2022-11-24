@@ -39,19 +39,19 @@ namespace ShaderForm2
 
 		[Description("Left-handed coordinate system with the z-axis pointing in the view direction")]
 		public float CamPosX { get => camPosX; set => Set(ref camPosX, value); }
-		
+
 		[Description("Left-handed coordinate system with the z-axis pointing in the view direction")]
 		public float CamPosY { get => camPosY; set => Set(ref camPosY, value); }
-		
+
 		[Description("Left-handed coordinate system with the z-axis pointing in the view direction")]
 		public float CamPosZ { get => camPosZ; set => Set(ref camPosZ, value); }
 
 		[Description("Left-handed coordinate system with the z-axis pointing in the view direction")]
 		public float CamRotX { get => camRotX; set => Set(ref camRotX, value); }
-		
+
 		[Description("Left-handed coordinate system with the z-axis pointing in the view direction")]
 		public float CamRotY { get => camRotY; set => Set(ref camRotY, value); }
-		
+
 		[Description("Left-handed coordinate system with the z-axis pointing in the view direction")]
 		public float CamRotZ { get => camRotZ; set => Set(ref camRotZ, value); }
 
@@ -135,7 +135,7 @@ namespace ShaderForm2
 			int GetLocation(string name) => GL.GetUniformLocation(shaderProgram.Handle, name);
 
 			_locResolution = GetLocation("u_resolution");
-			if(-1 == _locResolution) _locResolution = GetLocation("iResolution");
+			if (-1 == _locResolution) _locResolution = GetLocation("iResolution");
 
 			_locTime = GetLocation("u_time");
 			if (-1 == _locTime) _locTime = GetLocation("iGlobalTime");

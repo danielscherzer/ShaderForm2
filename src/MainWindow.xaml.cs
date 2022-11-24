@@ -5,7 +5,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using Zenseless.PersistentSettings;
 
 namespace ShaderForm2
 {
@@ -25,9 +24,9 @@ namespace ShaderForm2
 			_viewModel.PropertyChanged += (s, e) =>
 			{
 				OpenTkControl.RenderContinuously = _viewModel.IsRunning;
-				if(e.PropertyName == nameof(MainViewModel.ShowMenu))
+				if (e.PropertyName == nameof(MainViewModel.ShowMenu))
 				{
-					if(_viewModel.ShowMenu)
+					if (_viewModel.ShowMenu)
 					{
 						menuTray.Height = double.NaN; // NaN to reset the height (auto height)
 					}
@@ -116,7 +115,8 @@ namespace ShaderForm2
 		}
 
 		private void Window_KeyDown(object sender, KeyEventArgs e)
-		{	if (e.IsRepeat) return;
+		{
+			if (e.IsRepeat) return;
 			switch (e.Key)
 			{
 				case Key.Escape: Close(); break;

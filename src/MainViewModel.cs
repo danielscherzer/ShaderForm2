@@ -42,7 +42,7 @@ namespace ShaderForm2
 					.DelayedLoad(value)
 					.ObserveOnDispatcher()
 					.Subscribe(fileName => { shaderViewModel.Load(fileName); RaisePropertyChanged(); });
-				if(exists)
+				if (exists)
 				{
 					Set(ref _currentFile, value);
 				}

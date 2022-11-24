@@ -9,7 +9,6 @@ namespace ShaderForm2
 		internal static void Configure(MainWindow window, MainViewModel mainViewModel)
 		{
 			PersistentSettings settings = new();
-
 			settings.AddFromProperty(() => window.Left);
 			settings.AddFromProperty(() => window.Top);
 			settings.AddFromProperty(() => window.Height);
