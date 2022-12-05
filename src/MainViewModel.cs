@@ -33,6 +33,7 @@ namespace ShaderForm2
 			{
 				if (string.IsNullOrEmpty(value)) return;
 				bool exists = ShaderViewModel.Load(value);
+				if(!exists) return;
 				//TODO: remove Application.Current.Dispatcher in VM
 				Application.Current.Dispatcher.Invoke(() => RecentlyUsed.Insert(0, value));
 				IEnumerable<string> distinct = RecentlyUsed.Distinct();
