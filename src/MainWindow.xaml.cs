@@ -69,6 +69,7 @@ namespace ShaderForm2
 				MajorVersion = 4,
 				MinorVersion = 5,
 				GraphicsProfile = OpenTK.Windowing.Common.ContextProfile.Compatability,
+				GraphicsContextFlags = OpenTK.Windowing.Common.ContextFlags.Default,
 				RenderContinuously = false,
 				UseDeviceDpi = true,
 
