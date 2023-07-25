@@ -1,4 +1,5 @@
 ﻿using OpenTK.Mathematics;
+using ShaderForm2.Tools;
 using ShaderForm2.WPFTools;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ internal class MainViewModel : NotifyPropertyChanged
 	public MainViewModel()
 	{
 		LoadCommand = new TypedDelegateCommand<string>(path => CurrentFile = path);
-		//shaderViewModel.PropertyChanged += (_, __) => Op
+		//shaderViewModel.PropertyChanged += (_, __) => RaisePropertyChanged();
 	}
 
 	public FirstPersonCamera Camera { get; } = new();
@@ -54,6 +55,7 @@ internal class MainViewModel : NotifyPropertyChanged
 	public bool IsRunning { get => _isRunning; set => Set(ref _isRunning, value); }
 	public bool TopMost { get => _topMost; set => Set(ref _topMost, value); }
 	public bool ShowMenu { get => _showMenu; set => Set(ref _showMenu, value); }
+	//public bool ShowLog => shaderViewModel.Log != string.Empty; //TODO: notify on log change
 
 	public ObservableCollection<string> RecentlyUsed { get => _recentlyUsed; set => Set(ref _recentlyUsed, value/*, coll => BindingOperations.EnableCollectionSynchronization(coll, _lockObj)*/); }
 

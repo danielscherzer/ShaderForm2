@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:hc="https://handyorg.github.io/handycontrol"
         xmlns:glWpfControl="clr-namespace:OpenTK.Wpf;assembly=GLWpfControl"
-        xmlns:self="clr-namespace:ShaderForm2"
+        xmlns:self="clr-namespace:ShaderForm2.WPFTools"
         mc:Ignorable="d"
         Title="{Binding CurrentFile}" Height="450" Width="800" Icon="Content/shaderform2.ico"
 		Topmost="{Binding TopMost}" 
@@ -60,10 +60,15 @@
 			</StackPanel>
 		</ScrollViewer>
 			<GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-			<glWpfControl:GLWpfControl Grid.Column="2" x:Name="OpenTkControl" SnapsToDevicePixels="True" Focusable="True"
-									   Render="OpenTkControl_OnRender" 
-									MouseDown="OpenTkControl_Mouse" MouseMove="OpenTkControl_Mouse" MouseUp="OpenTkControl_Mouse"
-									SizeChanged="OpenTkControl_SizeChanged"/>
+			<Grid Grid.Column="2">
+				<glWpfControl:GLWpfControl x:Name="OpenTkControl" SnapsToDevicePixels="True" Focusable="True"
+										   Render="OpenTkControl_OnRender" 
+										MouseDown="OpenTkControl_Mouse" MouseMove="OpenTkControl_Mouse" MouseUp="OpenTkControl_Mouse"
+										SizeChanged="OpenTkControl_SizeChanged"/>
+				<!--<TextBlock VerticalAlignment="Center" Background="Gray"
+						   Text="{Binding ShaderViewModel.Log}"
+						   Visibility="{Binding ShowLog, Converter={StaticResource BoolToVis}}"/>-->
+			</Grid>
 		</Grid>
 	</DockPanel>
 </Window>

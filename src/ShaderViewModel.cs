@@ -23,19 +23,31 @@ internal class ShaderViewModel : NotifyPropertyChanged
 		var fragmentSource = File.ReadAllText(filePath);
 		var dir = Path.GetDirectoryName(filePath) ?? throw new ApplicationException("Shader file path without directory information.");
 		fragmentSource = GLSLhelper.Transformation.ExpandIncludes(fragmentSource, fileName => File.ReadAllText(Path.Combine(dir, fileName)));
-		var newShaderProgram = LoadFragmentShader(fragmentSource);
-		_shaderProgram.Dispose();
-		if (newShaderProgram is null)
+		try
 		{
-			_shaderProgram = LoadFragmentShader(_defaultFragmentSource) ?? throw new ApplicationException("Could not load default shader.");
+			var newShaderProgram = LoadFragmentShader(fragmentSource);
+			_shaderProgram.Dispose();
+			if (newShaderProgram is null)
+			{
+				_shaderProgram = LoadFragmentShader(_defaultFragmentSource) ?? throw new ApplicationException("Could not load default shader.");
+			}
+			else
+			{
+				_shaderProgram = newShaderProgram;
+			}
+			ResolveDefaultUniformLocation(_shaderProgram);
+			Log = string.Empty;
 		}
-		else
+		catch (ShaderException e)
 		{
-			_shaderProgram = newShaderProgram;
+			//TODO: write shader log
+			Log = e.Message;
 		}
-		ResolveDefaultUniformLocation(_shaderProgram);
 		return true;
 	}
+
+	[Description("Log of shader compilation/link")]
+	public string Log { get => log; set => Set(ref log, value); }
 
 	[Description("Left-handed coordinate system with the z-axis pointing in the view direction")]
 	public float CamPosX { get => camPosX; set => Set(ref camPosX, value); }
@@ -112,22 +124,16 @@ internal class ShaderViewModel : NotifyPropertyChanged
 	private ShaderProgram _shaderProgram;
 	private Vector2 _resolution = Vector2.One;
 	private float _time;
+	private string log = "";
 
-	private static ShaderProgram? LoadFragmentShader(string fragmentSource)
+	private static ShaderProgram LoadFragmentShader(string fragmentSource)
 	{
-		try
+		(ShaderType, string)[] shaderInput = new[]
 		{
-			(ShaderType, string)[] shaderInput = new[]
-			{
-				(ShaderType.VertexShader, _defaultVertexSource),
-				(ShaderType.FragmentShader, fragmentSource)
-			};
-			return new ShaderProgram().CompileLink(shaderInput);
-		}
-		catch
-		{
-			return null;
-		}
+			(ShaderType.VertexShader, _defaultVertexSource),
+			(ShaderType.FragmentShader, fragmentSource)
+		};
+		return new ShaderProgram().CompileLink(shaderInput);
 	}
 
 	private void ResolveDefaultUniformLocation(ShaderProgram shaderProgram)

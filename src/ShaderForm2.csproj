@@ -28,10 +28,8 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="OpenTK.GLWpfControl" Version="4.2.3" />
     <PackageReference Include="System.Reactive" Version="6.0.0" />
-    <PackageReference Include="Zenseless.OpenTK" Version="0.1.70" />
-    <PackageReference Include="Zenseless.Patterns" Version="0.6.35" />
+    <PackageReference Include="Zenseless.OpenTK" Version="0.1.74" />
     <PackageReference Include="Zenseless.PersistentSettings" Version="0.1.8" />
-    <PackageReference Include="Zenseless.Resources" Version="0.2.14" />
   </ItemGroup>
   
 </Project>
