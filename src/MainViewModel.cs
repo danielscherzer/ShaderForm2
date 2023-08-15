@@ -105,12 +105,9 @@ internal class MainViewModel : NotifyPropertyChanged
 	internal void Render(float frameTime)
 	{
 		Camera.MoveLocal(movement * frameTime);
-		ShaderViewModel.CamPosX = Camera.Position.X;
-		ShaderViewModel.CamPosY = Camera.Position.Y;
-		ShaderViewModel.CamPosZ = Camera.Position.Z;
+		ShaderViewModel.CamPos = Camera.Position;
 
-		ShaderViewModel.CamRotX = OpenTK.Mathematics.MathHelper.DegreesToRadians(Camera.Tilt);
-		ShaderViewModel.CamRotY = OpenTK.Mathematics.MathHelper.DegreesToRadians(Camera.Heading);
+		ShaderViewModel.CamRot = new Vector3(OpenTK.Mathematics.MathHelper.DegreesToRadians(Camera.Tilt), OpenTK.Mathematics.MathHelper.DegreesToRadians(Camera.Heading), 0f);
 
 		if (IsRunning) ShaderViewModel.Time += frameTime;
 		ShaderViewModel.Render();

@@ -50,22 +50,10 @@ internal class ShaderViewModel : NotifyPropertyChanged
 	public string Log { get => log; set => Set(ref log, value); }
 
 	[Description("Left-handed coordinate system with the z-axis pointing in the view direction")]
-	public float CamPosX { get => camPosX; set => Set(ref camPosX, value); }
+	public Vector3 CamPos { get => camPos; set => Set(ref camPos, value); }
 
 	[Description("Left-handed coordinate system with the z-axis pointing in the view direction")]
-	public float CamPosY { get => camPosY; set => Set(ref camPosY, value); }
-
-	[Description("Left-handed coordinate system with the z-axis pointing in the view direction")]
-	public float CamPosZ { get => camPosZ; set => Set(ref camPosZ, value); }
-
-	[Description("Left-handed coordinate system with the z-axis pointing in the view direction")]
-	public float CamRotX { get => camRotX; set => Set(ref camRotX, value); }
-
-	[Description("Left-handed coordinate system with the z-axis pointing in the view direction")]
-	public float CamRotY { get => camRotY; set => Set(ref camRotY, value); }
-
-	[Description("Left-handed coordinate system with the z-axis pointing in the view direction")]
-	public float CamRotZ { get => camRotZ; set => Set(ref camRotZ, value); }
+	public Vector3 CamRot { get => camRot; set => Set(ref camRot, value); }
 
 	[Description("Mouse.X\nMouse.Y\nMouse.Z: 1 == left button, 2 == middle button, 3 == right button")]
 	public Vector3 Mouse { get => _mouse; set => Set(ref _mouse, value); }
@@ -83,13 +71,9 @@ internal class ShaderViewModel : NotifyPropertyChanged
 		if (-1 != _locMouseButton) _shaderProgram.Uniform(_locMouse, Mouse);
 		UniformF(_locTime, Time);
 
-		UniformF(_locCamPosX, CamPosX);
-		UniformF(_locCamPosY, CamPosY);
-		UniformF(_locCamPosZ, CamPosZ);
+		UniformV3(_locCamPos, CamPos);
+		UniformV3(_locCamRot, CamRot);
 
-		UniformF(_locCamRotX, CamRotX);
-		UniformF(_locCamRotY, CamRotY);
-		UniformF(_locCamRotZ, CamRotZ);
 		_shaderProgram.Bind();
 		GL.DrawArrays(PrimitiveType.TriangleStrip, 0, 4);
 	}
@@ -99,27 +83,24 @@ internal class ShaderViewModel : NotifyPropertyChanged
 		if (-1 != location) _shaderProgram.Uniform(location, value);
 	}
 
+	private void UniformV3(int location, Vector3 value)
+	{
+		if (-1 != location) _shaderProgram.Uniform(location, value);
+	}
+
 	private static readonly EmbeddedResourceDirectory _dir = new(nameof(ShaderForm2) + ".content");
 	private static readonly string _defaultVertexSource = _dir.Resource("screenQuad.vert").AsString();
 	private static readonly string _defaultFragmentSource = _dir.Resource("checker.frag").AsString();
 
-	private float camPosX;
-	private float camPosY;
-	private float camPosZ;
-	private float camRotX;
-	private float camRotY;
-	private float camRotZ;
+	private Vector3 camPos;
+	private Vector3 camRot;
 	private int _locResolution = -1;
 	private int _locTime = -1;
 	private int _locMouse = -1;
 	private int _locMouseButton = -1;
 	//TODO: Use vector uniform for camera next semester
-	private int _locCamPosX = -1;
-	private int _locCamPosY = -1;
-	private int _locCamPosZ = -1;
-	private int _locCamRotX = -1;
-	private int _locCamRotY = -1;
-	private int _locCamRotZ = -1;
+	private int _locCamPos = -1;
+	private int _locCamRot = -1;
 	private Vector3 _mouse;
 	private ShaderProgram _shaderProgram;
 	private Vector2 _resolution = Vector2.One;
@@ -150,12 +131,7 @@ internal class ShaderViewModel : NotifyPropertyChanged
 		_locMouse = GetLocation("u_mouse");
 		_locMouseButton = GetLocation("iMouse");
 
-		_locCamPosX = GetLocation("iCamPosX");
-		_locCamPosY = GetLocation("iCamPosY");
-		_locCamPosZ = GetLocation("iCamPosZ");
-
-		_locCamRotX = GetLocation("iCamRotX");
-		_locCamRotY = GetLocation("iCamRotY");
-		_locCamRotZ = GetLocation("iCamRotZ");
+		_locCamPos = GetLocation("iCamPos");
+		_locCamRot = GetLocation("iCamRot");
 	}
 }
